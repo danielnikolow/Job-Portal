@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobPortal - Намери перфектната работа</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="container">
+        <div class="nav-wrapper">
+            <div class="logo">
+                <a th:href="@{/}">JobPortal</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a th:href="@{/jobs}">Работи</a></li>
+                <li><a th:href="@{/companies}">Компании</a></li>
+                <li><a th:href="@{/about}">За нас</a></li>
+                <li><a th:href="@{/contact}">Контакт</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a th:href="@{/login}" class="btn-secondary">Вход</a>
+                <a th:href="@{/register}" class="btn-primary">Регистрация</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-background">
+        <div class="hero-gradient"></div>
+        <div class="hero-pattern"></div>
+        <div class="hero-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>🚀 Водеща платформа за кариера</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="title-line">Намери перфектната</span>
+                <span class="title-highlight">работа днес</span>
+            </h1>
+            <p class="hero-subtitle">Свържи се с над <strong>10,000+</strong> компании и открий твоята мечтана кариера. Създай профил за <strong>безплатно</strong> и започни да кандидатстваш веднага.</p>
+
+            <!-- Search Form -->
+            <div class="search-box">
+                <form th:action="@{/jobs/search}" method="get" class="search-form">
+                    <div class="search-input-group">
+                        <div class="search-field">
+                            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input type="text" name="keyword" placeholder="Позиция, ключова дума или компания" class="search-input">
+                        </div>
+                        <div class="search-field">
+                            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <input type="text" name="location" placeholder="Град или област" class="search-input">
+                        </div>
+                        <button type="submit" class="search-btn">
+                            <span>Търси</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Popular Searches -->
+            <div class="popular-searches">
+                <span class="popular-label">Популярни търсения:</span>
+                <div class="popular-tags">
+                    <a th:href="@{/jobs?keyword=Software+Developer}" class="tag">Software Developer</a>
+                    <a th:href="@{/jobs?keyword=Marketing+Manager}" class="tag">Marketing Manager</a>
+                    <a th:href="@{/jobs?keyword=Sales+Representative}" class="tag">Sales Representative</a>
+                    <a th:href="@{/jobs?keyword=Data+Analyst}" class="tag">Data Analyst</a>
+                    <a th:href="@{/jobs?keyword=Project+Manager}" class="tag">Project Manager</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">💼</div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="5000">0</div>
+                    <div class="stat-label">Активни обяви</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏢</div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="10000">0</div>
+                    <div class="stat-label">Партньорски компании</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="50000">0</div>
+                    <div class="stat-label">Регистрирани кандидати</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-content">
+                    <div class="stat-number" data-count="15000">0</div>
+                    <div class="stat-label">Успешни назначавания</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="categories">
+    <div class="container">
+        <div class="section-header-modern">
+            <div class="section-header-text">
+                <span class="section-badge">Категории</span>
+                <h2 class="section-title">Търси по категории</h2>
+                <p class="section-description">Избери от нашите популярни категории и открий идеалната позиция за теб</p>
+            </div>
+            <a th:href="@{/jobs}" class="view-all-btn">Виж всички категории →</a>
+        </div>
+        <div class="categories-grid">
+            <a th:href="@{/jobs?category=business}" class="category-card">
+                <div class="category-icon-wrapper">
+                    <div class="category-icon">💼</div>
+                    <div class="category-bg"></div>
+                </div>
+                <h3>Бизнес & Управление</h3>
+                <p class="category-count">1,234 обяви</p>
+                <span class="category-link">Виж обяви →</span>
+            </a>
+            <a th:href="@{/jobs?category=it}" class="category-card featured">
+                <div class="category-badge-featured">Най-популярна</div>
+                <div class="category-icon-wrapper">
+                    <div class="category-icon">💻</div>
+                    <div class="category-bg"></div>
+                </div>
+                <h3>IT & Технологии</h3>
+                <p class="category-count">2,456 обяви</p>
+                <span class="category-link">Виж обяви →</span>
+            </a>
+            <a th:href="@{/jobs?category=healthcare}" class="category-card">
+                <div class="category-icon-wrapper">
+                    <div class="category-icon">🏥</div>
+                    <div class="category-bg"></div>
+                </div>
+                <h3>Здравеопазване</h3>
+                <p class="category-count">856 обяви</p>
+                <span class="category-link">Виж обяви →</span>
+            </a>
+            <a th:href="@{/jobs?category=education}" class="category-card">
+                <div class="category-icon-wrapper">
+                    <div class="category-icon">🎓</div>
+                    <div class="category-bg"></div>
+                </div>
+                <h3>Образование</h3>
+                <p class="category-count">678 обяви</p>
+                <span class="category-link">Виж обяви →</span>
+            </a>
+            <a th:href="@{/jobs?category=construction}" class="category-card">
+                <div class="category-icon-wrapper">
+                    <div class="category-icon">🏗️</div>
+                    <div class="category-bg"></div>
+                </div>
+                <h3>Строителство</h3>
+                <p class="category-count">423 обяви</p>
+                <span class="category-link">Виж обяви →</span>
+            </a>
+            <a th:href="@{/jobs?category=design}" class="category-card">
+                <div class="category-icon-wrapper">
+                    <div class="category-icon">🎨</div>
+                    <div class="category-bg"></div>
+                </div>
+                <h3>Дизайн & Креатив</h3>
+                <p class="category-count">789 обяви</p>
+                <span class="category-link">Виж обяви →</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works">
+    <div class="container">
+        <div class="section-header-modern">
+            <div class="section-header-text">
+                <span class="section-badge">Как работи</span>
+                <h2 class="section-title">Намери работа в 3 лесни стъпки</h2>
+                <p class="section-description">Бърз процес, който ти помага да намериш идеалната работа</p>
+            </div>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">01</div>
+                <div class="step-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <h3>Създай профил</h3>
+                <p>Регистрирай се безплатно и попълни своя профил с опит и умения</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">02</div>
+                <div class="step-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </div>
+                <h3>Търси обяви</h3>
+                <p>Разгледай хиляди обяви и филтрирай според своите критерии</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">03</div>
+                <div class="step-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <h3>Кандидатствай</h3>
+                <p>Изпрати кандидатстването си с един клик и чакай обратна връзка</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Jobs Section -->
+<section class="featured-jobs">
+    <div class="container">
+        <div class="section-header-modern">
+            <div class="section-header-text">
+                <span class="section-badge">Препоръчано</span>
+                <h2 class="section-title">Препоръчани обяви</h2>
+                <p class="section-description">Ръчно подбрани обяви от топ компании в индустрията</p>
+            </div>
+            <a th:href="@{/jobs}" class="view-all-btn">Виж всички обяви →</a>
+        </div>
+        <div class="jobs-grid" th:if="${featuredJobs}">
+            <div class="job-card" th:each="job : ${featuredJobs}">
+                <div class="job-card-header">
+                    <div class="company-logo">
+                        <img th:src="${job.company.logo}" alt="Company Logo" th:if="${job.company.logo}">
+                        <div class="logo-placeholder" th:unless="${job.company.logo}">
+                            <span th:text="${job.company.name.substring(0, 1)}"></span>
+                        </div>
+                    </div>
+                    <div class="job-info">
+                        <h3 class="job-title" th:text="${job.title}">Job Title</h3>
+                        <p class="company-name" th:text="${job.company.name}">Company Name</p>
+                    </div>
+                    <button class="bookmark-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="job-details">
+                        <span class="job-location">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span th:text="${job.location}">Location</span>
+                        </span>
+                    <span class="job-type" th:text="${job.jobType}">Full-time</span>
+                </div>
+                <div class="job-footer">
+                    <span class="job-salary" th:text="${job.salary}">Salary</span>
+                    <a th:href="@{/jobs/{id}(id=${job.id})}" class="job-link">Виж детайли →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials">
+    <div class="container">
+        <div class="section-header-modern">
+            <div class="section-header-text">
+                <span class="section-badge">Отзиви</span>
+                <h2 class="section-title">Какво казват нашите потребители</h2>
+                <p class="section-description">Реални истории от хора, които намериха работа през нашата платформа</p>
+            </div>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Намерих перфектната работа за 2 седмици! Процесът е толкова лесен и платформата е много професионална."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">МИ</div>
+                    <div class="author-info">
+                        <div class="author-name">Мария Иванова</div>
+                        <div class="author-role">Software Developer @ TechCorp</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Като работодател, намирам отличен талант през JobPortal. Интерфейсът е интуитивен и кандидатите са качествени."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">ПД</div>
+                    <div class="author-info">
+                        <div class="author-name">Петър Димитров</div>
+                        <div class="author-role">HR Manager @ InnovateBG</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Благодарение на JobPortal промених кариерата си. Филтрите са точни и намерих точно това, което търсех."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">АС</div>
+                    <div class="author-info">
+                        <div class="author-name">Анна Стоянова</div>
+                        <div class="author-role">Marketing Manager @ BrandUp</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-background"></div>
+    <div class="container">
+        <div class="cta-content">
+            <div class="cta-badge">Започни днес</div>
+            <h2>Готови ли сте да започнете своята кариера?</h2>
+            <p>Регистрирайте се безплатно и получи достъп до хиляди обяви от водещи компании. Започни своя път към успешната кариера днес!</p>
+            <div class="cta-buttons">
+                <a th:href="@{/register/employer}" class="btn-primary btn-large btn-cta-white">
+                    <span>Регистрация като работодател</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+                <a th:href="@{/register}" class="btn-secondary btn-large btn-cta-outline">
+                    <span>Регистрация като кандидат</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+            <div class="cta-trust">
+                <div class="trust-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>100% Безплатно</span>
+                </div>
+                <div class="trust-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>Без скрити такси</span>
+                </div>
+                <div class="trust-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>Моментална регистрация</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>JobPortal</h3>
+                <p>Водещата платформа за търсене на работа в България</p>
+            </div>
+            <div class="footer-section">
+                <h4>За кандидати</h4>
+                <ul>
+                    <li><a href="#">Търси работа</a></li>
+                    <li><a href="#">Създай профил</a></li>
+                    <li><a href="#">Кариерен съвет</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>За работодатели</h4>
+                <ul>
+                    <li><a href="#">Публикувай обява</a></li>
+                    <li><a href="#">Търси кандидати</a></li>
+                    <li><a href="#">Цени</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Ресурси</h4>
+                <ul>
+                    <li><a href="#">Блог</a></li>
+                    <li><a href="#">Помощ</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 JobPortal. Всички права запазени.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Animated counter for stats
+    function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-count'));
+        const duration = 2000;
+        const increment = target / (duration / 16);
+        let current = 0;
+
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target.toLocaleString('bg-BG');
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current).toLocaleString('bg-BG');
+            }
+        }, 16);
+    }
+
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.3,
+        rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+
+                // Animate stats counter
+                if (entry.target.classList.contains('stat-number')) {
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            }
+        });
+    }, observerOptions);
+
+    // Observe all stat numbers and cards
+    document.querySelectorAll('.stat-number, .category-card, .step-card, .testimonial-card, .job-card').forEach(el => {
+        observer.observe(el);
+    });
+</script>
+</body>
+</html>
+

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моят дом – Последни обяви | JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/user-home.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+</head>
+<body class="user-home-page">
+<header class="user-hero">
+    <div class="user-hero-bg">
+        <div class="bg-glow glow-1"></div>
+        <div class="bg-glow glow-2"></div>
+        <div class="mesh-overlay"></div>
+    </div>
+    <div class="container">
+        <div class="user-hero-content">
+            <div class="user-identity">
+<!--                <div class="avatar" th:if="${user != null && user.avatar}">-->
+<!--                    <img th:src="${user.avatar}" alt="Avatar">-->
+<!--                </div>-->
+<!--                <div class="avatar placeholder" th:if="${user == null || user.avatar == null}">-->
+<!--                    <span th:text="${user != null ? user.fullName.substring(0,1) : 'U'}">U</span>-->
+<!--                </div>-->
+                <div class="hello">
+                    <p class="greeting">Здравей,</p>
+                    <h1 class="username" th:text="${user.username}">Кандидат</h1>
+                </div>
+            </div>
+            <div class="quick-stats" th:if="${userStats}">
+                <div class="qstat">
+                    <div class="qstat-value" th:text="${userStats.savedJobs}">0</div>
+                    <div class="qstat-label">Запазени</div>
+                </div>
+                <div class="qstat">
+                    <div class="qstat-value" th:text="${userStats.applied}">0</div>
+                    <div class="qstat-label">Кандидатури</div>
+                </div>
+                <div class="qstat">
+                    <div class="qstat-value" th:text="${userStats.matches}">0</div>
+                    <div class="qstat-label">Съвпадения</div>
+                </div>
+            </div>
+            <div class="profile-menu-wrapper" th:if="${user != null}">
+                <button type="button"
+                        class="profile-trigger"
+                        id="profileTrigger"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    <span class="sr-only">Профил</span>
+                    <span th:if="${user.avatar != null}">
+                        <img th:src="${user.avatar}" alt="Профил">
+                    </span>
+                    <span class="avatar-fallback" th:if="${user.avatar == null}"
+                          th:text="${user.fullName}">U</span>
+                    <span class="trigger-name">
+                        <span>Профил</span>
+                        <span th:text="${user.username}">Кандидат</span>
+                    </span>
+                    <svg class="trigger-caret" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+                <div class="profile-dropdown" id="profileDropdown" role="menu" aria-labelledby="profileTrigger">
+                    <div class="profile-header">
+                        <div class="ph-avatar">
+                            <img th:if="${user.avatar != null}" th:src="${user.avatar}" alt="Аватар">
+                            <span th:if="${user.avatar == null}"
+                                  th:text="${user.username != null ? user.username.substring(0,1) : 'U'}">U</span>
+                        </div>
+<!--                        <div class="ph-info">-->
+<!--                            <div class="ph-name" th:text="${user.fullName}">Кандидат</div>-->
+<!--                            <div class="ph-email" th:text="${user.email}">user@mail.com</div>-->
+<!--                        </div>-->
+                    </div>
+                    <a class="profile-item" th:href="@{/profile/jobs}" role="menuitem">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M20 7h-4V6a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Zm-10-1h4v1h-4V6Z"/>
+                        </svg>
+                        <span>My Jobs</span>
+                    </a>
+                    <a class="profile-item" th:href="@{/account}" role="menuitem">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm7 9a7 7 0 0 0-14 0"/>
+                        </svg>
+                        <span>View Account</span>
+                    </a>
+                    <a class="profile-item" th:href="@{/account(tab='tab-security')}" role="menuitem">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Сигурност</span>
+                    </a>
+                    <a class="profile-item" th:href="@{/account(tab='tab-preferences')}" role="menuitem">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 6v12M6 12h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Предпочитания</span>
+                    </a>
+                    <form th:action="@{/logout}" method="post" class="profile-item as-form" role="none">
+                        <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}">
+                        <button type="submit">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+                            </svg>
+                            <span>Sign Out</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <form class="user-search" th:action="@{/jobs/search}" method="get">
+            <div class="search-card">
+                <div class="search-header">
+                    <div class="search-intro">
+                        <span class="search-badge">Интелигентно търсене</span>
+                        <h2 class="search-title">Намери следващата си възможност</h2>
+                        <p class="search-subtitle">Филтрирай обявите по ключови критерии и получи най-подходящите резултати.</p>
+                    </div>
+                    <div class="search-actions">
+                        <button type="reset" class="search-reset">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 12a9 9 0 1 0 9-9"/>
+                                <path d="M3 3v6h6"/>
+                            </svg>
+                            <span>Изчисти</span>
+                        </button>
+                        <button type="button" class="search-advanced-toggle" data-target="advancedFilters" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 5h18"/>
+                                <path d="M7 10h10"/>
+                                <path d="M11 15h2"/>
+                                <path d="M13 20L19 12"/>
+                                <path d="M11 20L5 12"/>
+                            </svg>
+                            <span>Разширени филтри</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="search-grid">
+                    <label class="field">
+                        <span class="field-label">Позиция / ключова дума</span>
+                        <div class="field-control">
+                            <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 21l-4.35-4.35"/>
+                                <circle cx="11" cy="11" r="7"/>
+                            </svg>
+                            <input type="text" name="keyword" placeholder="Пример: Java Developer" aria-label="Ключова дума">
+                </div>
+                    </label>
+
+                    <label class="field">
+                        <span class="field-label">Локация</span>
+                        <div class="field-control">
+                            <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10a9 9 0 1 0-18 0c0 5 9 12 9 12s9-7 9-12z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <input type="text" name="location" placeholder="София, дистанционно..." aria-label="Локация">
+                </div>
+                    </label>
+
+                    <label class="field">
+                        <span class="field-label">Тип заетост</span>
+                        <div class="field-control">
+                            <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 7h18"/>
+                                <path d="M5 7v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7"/>
+                                <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
+                            </svg>
+                    <select name="jobType" aria-label="Тип">
+                                <option value="">Всички типове</option>
+                        <option value="FULL_TIME">Пълен ден</option>
+                        <option value="PART_TIME">Непълен ден</option>
+                        <option value="CONTRACT">Договор</option>
+                        <option value="REMOTE">Дистанционно</option>
+                    </select>
+                </div>
+                    </label>
+
+                    <div class="field submit-field">
+                <button class="btn-search" type="submit">
+                    <span>Търси</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+            </div>
+                </div>
+
+                <div class="advanced-filters" id="advancedFilters">
+                    <div class="advanced-grid">
+                        <label class="field">
+                            <span class="field-label">Ниво опит</span>
+                            <div class="field-control">
+                                <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M7 20h10"/>
+                                    <path d="M12 14v6"/>
+                                    <path d="M9 11l3-3 3 3"/>
+                                    <path d="M12 4v4"/>
+                                </svg>
+                                <select name="experienceLevel" aria-label="Ниво опит">
+                                    <option value="">Всички нива</option>
+                                    <option value="INTERN">Стажант</option>
+                                    <option value="JUNIOR">Junior</option>
+                                    <option value="MID">Mid</option>
+                                    <option value="SENIOR">Senior</option>
+                                    <option value="LEAD">Lead</option>
+                                </select>
+                            </div>
+                        </label>
+
+                        <div class="field range-field">
+                            <span class="field-label">Месечна заплата (лв.)</span>
+                            <div class="range-controls">
+                                <div class="field-control">
+                                    <span class="range-prefix">от</span>
+                                    <input type="number" name="salaryMin" min="0" step="100" placeholder="2000">
+                                </div>
+                                <div class="field-control">
+                                    <span class="range-prefix">до</span>
+                                    <input type="number" name="salaryMax" min="0" step="100" placeholder="6000">
+                                </div>
+                            </div>
+                        </div>
+
+                        <label class="field">
+                            <span class="field-label">Публикувана</span>
+                            <div class="field-control">
+                                <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="9"/>
+                                    <path d="M12 7v5l3 3"/>
+                                </svg>
+                                <select name="postedWithin" aria-label="Период">
+                                    <option value="">Без значение</option>
+                                    <option value="1">Последните 24 часа</option>
+                                    <option value="3">Последните 3 дни</option>
+                                    <option value="7">Последната седмица</option>
+                                    <option value="14">Последните 2 седмици</option>
+                                    <option value="30">Последния месец</option>
+                                </select>
+                            </div>
+                        </label>
+
+                        <div class="field toggle-field">
+                            <span class="field-label">Работа</span>
+                            <label class="switch">
+                                <input type="checkbox" name="remoteOnly" value="true">
+                                <span class="switch-slider"></span>
+                                <span class="switch-label">Само дистанционни позиции</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chips highlighted" th:if="${suggestedTags}">
+                    <span class="chips-title">Популярни търсения:</span>
+                <a class="chip" th:each="t : ${suggestedTags}" th:text="${t}" th:href="@{/jobs/search(keyword=${t})}">Java</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</header>
+
+<main class="user-home-main">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="badge">Ново</span>
+                <h2>Последно добавени обяви</h2>
+                <p class="sub">Актуални възможности, подредени по дата на публикуване</p>
+            </div>
+            <a th:href="@{/jobs}" class="view-all">Виж всички →</a>
+        </div>
+
+        <div class="feed-grid">
+            <article class="job-tile" th:each="job : ${latestJobs}">
+                <div class="tile-head">
+                    <div class="brand">
+                        <!--                        <div class="brand-logo" th:if="${job.company.logo}">-->
+                        <!--                            <img th:src="${job.company.logo}" alt="Logo">-->
+                        <!--                        </div>-->
+                        <div class="brand-logo placeholder" th:if="${job.company == null}">
+                            <span th:text="${job.company.substring(0,1)}">C</span>
+                        </div>
+                        <div class="brand-text">
+                            <h3 class="job-title"><a th:href="@{/jobs/{id}(id=${job.id})}" th:text="${job.title}">Job
+                                title</a></h3>
+                            <p class="company" th:text="${job.company}">Company</p>
+                        </div>
+                    </div>
+                    <button class="save" title="Запази">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="tile-meta">
+            <span class="meta">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2"><path
+                      d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span th:text="${job.location}">София</span>
+            </span>
+                    <span class="meta type" th:text="${job.employmentType}">Full-time</span>
+                    <span class="meta posted">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline
+                      points="12 6 12 12 16 14"></polyline></svg>
+              <span th:text="${job.postedOn}">Преди 2 дни</span>
+            </span>
+                </div>
+                <p class="tile-desc" th:text="${job.description}">Кратко описание на позицията...</p>
+                <!--                <div class="tile-tags" th:if="${job.tags}">-->
+                <!--                    <span class="tag" th:each="tag : ${job.tags}" th:text="${tag}">Java</span>-->
+                <!--                </div>-->
+                <div class="tile-foot">
+                    <div class="salary" th:text="${job.salaryMax}">5 000 - 7 000 лв.</div>
+
+                    <a th:href="@{/jobs/{id}(id=${job.id})}" class="btn-outline">Детайли</a>
+
+                    <form th:action="@{'/jobs/' + ${job.id}}" method="post" class="quest-action-form">
+                        <input type="hidden" name="_method" value="PATCH"/>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button th:if="${job.appliedUser == null}" class="gold-regular-button completed">Кандидатствай
+                        </button>
+                        <button th:unless="${job.appliedUser == null}" class="gold-regular-button completed">Заявено
+                        </button>
+                    </form>
+                    <!--                    <a th:href="@{/jobs/{id}(id=${job.id})}" class="btn-outline">Детайли</a>-->
+
+                    <!--                    <div th:action="@{'/quests/' + ${quest.id}}" th:method="PATCH" class="actions">-->
+                    <!--                        <a th:href="@{/jobs/{id}/apply(id=${job.id})}" class="btn-primary">Кандидатствай</a>-->
+                    <!--                    </div>-->
+                </div>
+            </article>
+        </div>
+
+        <div class="empty" th:if="${latestJobs == null || #lists.isEmpty(latestJobs)}">
+            <div class="empty-card">
+                <div class="empty-icon">🔎</div>
+                <h3>Няма нови обяви</h3>
+                <p>Абонирай се за известия или прегледай всички категории.</p>
+                <div class="empty-actions">
+                    <a th:href="@{/jobs}" class="btn-secondary">Разгледай всички</a>
+                    <a th:href="@{/alerts}" class="btn-primary">Активирай известия</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-head mt">
+            <div>
+                <span class="badge alt">Препоръчано за теб</span>
+                <h2>Предложения според профила</h2>
+                <p class="sub">Базирани на твоите умения и активност</p>
+            </div>
+        </div>
+        <div class="recommendations" th:if="${recommendedJobs}">
+            <a class="pill" th:each="r : ${recommendedJobs}" th:href="@{/jobs/{id}(id=${r.id})}">
+                <span class="pill-title" th:text="${r.title}">Backend Engineer</span>
+                <span class="pill-sub" th:text="${r.company.name}">Acme</span>
+            </a>
+        </div>
+    </div>
+</main>
+
+<script>
+    const profileTrigger = document.getElementById('profileTrigger');
+    const profileDropdown = document.getElementById('profileDropdown');
+    if (profileTrigger && profileDropdown) {
+      const setMenuState = (isOpen) => {
+        profileDropdown.classList.toggle('is-open', isOpen);
+        profileTrigger.setAttribute('aria-expanded', String(isOpen));
+      };
+
+      profileTrigger.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const shouldOpen = !profileDropdown.classList.contains('is-open');
+        setMenuState(shouldOpen);
+      });
+
+      profileDropdown.addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
+
+      document.addEventListener('click', () => {
+        if (profileDropdown.classList.contains('is-open')) {
+          setMenuState(false);
+        }
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && profileDropdown.classList.contains('is-open')) {
+          setMenuState(false);
+          profileTrigger.focus();
+        }
+      });
+    }
+
+    // Advanced filter toggle
+    const advancedToggle = document.querySelector('.search-advanced-toggle');
+    if (advancedToggle) {
+      const targetId = advancedToggle.dataset.target;
+      const targetEl = document.getElementById(targetId);
+      advancedToggle.addEventListener('click', () => {
+        const isOpen = targetEl?.classList.toggle('is-open');
+        advancedToggle.setAttribute('aria-expanded', String(!!isOpen));
+      });
+
+      const formEl = advancedToggle.closest('form');
+      formEl?.addEventListener('reset', () => {
+        if (targetEl?.classList.contains('is-open')) {
+          targetEl.classList.remove('is-open');
+          advancedToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // Small reveal animation on scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('reveal');
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold: 0.15});
+    document.querySelectorAll('.job-tile, .empty-card, .pill').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

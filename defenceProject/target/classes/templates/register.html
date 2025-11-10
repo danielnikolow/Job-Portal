@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page register-page">
+<!-- Background -->
+<div class="register-background">
+    <div class="register-gradient"></div>
+    <div class="register-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+</div>
+
+<div class="register-container">
+    <div class="register-wrapper">
+        <!-- Left Side - Branding & Steps -->
+        <div class="register-branding">
+            <a th:href="@{/}" class="register-logo">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="48" height="48" rx="10" fill="url(#logoGrad)"/>
+                    <path d="M24 14L32 19V29L24 34L16 29V19L24 14Z" fill="white" opacity="0.95"/>
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48">
+                            <stop offset="0%" stop-color="#4F46E5"/>
+                            <stop offset="100%" stop-color="#7C3AED"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>JobPortal</span>
+            </a>
+
+            <div class="register-content">
+                <div class="welcome-section">
+                    <h1>Започни своята кариера!</h1>
+                    <p class="welcome-text">Присъедини се към нашата общност от професионалисти и открий мечтаната си работа.</p>
+                </div>
+
+                <!-- Benefits List -->
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <div class="benefit-content">
+                            <h3>100% Безплатно</h3>
+                            <p>Регистрация и използване без такси</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                        </div>
+                        <div class="benefit-content">
+                            <h3>Хиляди обяви</h3>
+                            <p>Достъп до над 5000+ активни позиции</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <div class="benefit-content">
+                            <h3>Защитени данни</h3>
+                            <p>Вашата информация е напълно защитена</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Indicator -->
+            <div class="registration-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-text">Попълнено: <span id="progressPercent">0%</span></p>
+            </div>
+        </div>
+
+        <!-- Right Side - Form -->
+        <div class="register-form-section">
+            <div class="register-form-wrapper">
+                <div class="form-header">
+                    <h2>Създай акаунт</h2>
+                    <p>Попълни формата по-долу и започни да намираш работа</p>
+                </div>
+
+                <!-- Error Message -->
+                <div class="alert alert-error" th:if="${error}" th:text="${error}">
+                    Възникна грешка при регистрацията
+                </div>
+
+                <form th:action="@{/register}" method="post" class="register-form" id="registerForm" th:object="${registerRequest}">
+                    <!-- User Type Selection -->
+                    <div class="user-type-selector">
+                        <label class="form-label-large">Регистрирай се като</label>
+                        <div class="user-type-options">
+                            <label class="user-type-option">
+                                <input type="radio" name="userType" value="CANDIDATE" checked>
+                                <div class="option-card">
+                                    <div class="option-icon">👤</div>
+                                    <div class="option-content">
+                                        <h4>Кандидат</h4>
+                                        <p>Търся работа</p>
+                                    </div>
+                                    <div class="option-check"></div>
+                                </div>
+                            </label>
+                            <label class="user-type-option">
+                                <input type="radio" name="userType" value="EMPLOYER">
+                                <div class="option-card">
+                                    <div class="option-icon">🏢</div>
+                                    <div class="option-content">
+                                        <h4>Работодател</h4>
+                                        <p>Публикувам обяви</p>
+                                    </div>
+                                    <div class="option-check"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- First Name and Last Name -->
+                    <div class="name-fields-group">
+                        <div class="form-group-advanced">
+                            <label for="firstName" class="form-label-advanced">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Първо име
+                            </label>
+                            <input type="text" id="firstName" name="firstName"  th:field="*{firstName}" class="form-input-advanced" placeholder="Иван" required autocomplete="given-name">
+                        </div>
+                        <div class="form-group-advanced">
+                            <label for="lastName" class="form-label-advanced">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Второ име
+                            </label>
+                            <input type="text" id="lastName" name="lastName" th:field="*{lastName}" class="form-input-advanced" placeholder="Иванов" required autocomplete="family-name">
+                        </div>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="form-group-advanced">
+                        <label for="username" class="form-label-advanced">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Потребителско име
+                            <span class="username-hint">Само букви, цифри и _</span>
+                        </label>
+                        <input type="text" id="username" name="username" th:field="*{username}" class="form-input-advanced" placeholder="ivan_ivanov" required autocomplete="username" pattern="[a-zA-Z0-9_]+" title="Само букви, цифри и долна черта">
+                        <div class="username-availability" id="usernameAvailability"></div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group-advanced">
+                        <label for="password" class="form-label-advanced">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Парола
+                            <span class="password-hint">Минимум 5 символа</span>
+                        </label>
+                        <div class="password-wrapper-advanced">
+                            <input type="password" id="password" name="password" th:field="*{password}" class="form-input-advanced" placeholder="Създай сигурна парола" required autocomplete="new-password">
+                            <button type="button" class="password-toggle-advanced" onclick="togglePassword('password', this)">
+                                <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                            <div class="strength-bar"></div>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group-advanced">
+                        <label for="confirmPassword" class="form-label-advanced">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            Потвърди парола
+                        </label>
+                        <div class="password-wrapper-advanced">
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-input-advanced" placeholder="Потвърди паролата" required autocomplete="new-password">
+                            <button type="button" class="password-toggle-advanced" onclick="togglePassword('confirmPassword', this)">
+                                <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Terms -->
+                    <div class="terms-agreement">
+                        <label class="terms-checkbox">
+                            <input type="checkbox" name="terms" required>
+                            <span class="terms-checkmark"></span>
+                            <span class="terms-text">
+                                    Съгласявам се с <a href="#" target="_blank">Условията за ползване</a> и <a href="#" target="_blank">Политиката за поверителност</a>
+                                </span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-register-primary">
+                        <span>Създай акаунт</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- Social Registration -->
+                <div class="social-register">
+                    <div class="divider-register">
+                        <span>или регистрирай се с</span>
+                    </div>
+                    <div class="social-buttons-register">
+                        <button class="social-btn social-google-register">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            <span>Google</span>
+                        </button>
+                        <button class="social-btn social-linkedin-register">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                            <span>LinkedIn</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="register-footer">
+                    <p>Вече имате акаунт? <a th:href="@{/login}">Влезте в профила си</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword(inputId, button) {
+        const input = document.getElementById(inputId);
+        const eyeOpen = button.querySelector('.eye-open');
+        const eyeClosed = button.querySelector('.eye-closed');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            eyeOpen.style.display = 'none';
+            eyeClosed.style.display = 'none';
+        } else {
+            input.type = 'password';
+            eyeOpen.style.display = 'block';
+            eyeClosed.style.display = 'none';
+        }
+    }
+
+    // Username validation
+    const usernameInput = document.getElementById('username');
+    const usernameAvailability = document.getElementById('usernameAvailability');
+
+    if (usernameInput) {
+        let usernameTimeout;
+        usernameInput.addEventListener('input', function() {
+            clearTimeout(usernameTimeout);
+            const username = this.value.trim();
+
+            if (username.length === 0) {
+                usernameAvailability.innerHTML = '';
+                return;
+            }
+
+            // Check pattern
+            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                usernameAvailability.innerHTML = '<span class="availability-error">⚠ Само букви, цифри и долна черта</span>';
+                return;
+            }
+
+            if (username.length < 3) {
+                usernameAvailability.innerHTML = '<span class="availability-warning">Минимум 3 символа</span>';
+                return;
+            }
+
+            if (username.length > 20) {
+                usernameAvailability.innerHTML = '<span class="availability-error">Максимум 20 символа</span>';
+                return;
+            }
+
+            // Simulate availability check (replace with actual API call)
+            usernameTimeout = setTimeout(() => {
+                usernameAvailability.innerHTML = '<span class="availability-checking">✓ Проверяване...</span>';
+                // In real implementation, make API call here
+                setTimeout(() => {
+                    usernameAvailability.innerHTML = '<span class="availability-success">✓ Потребителското име е свободно</span>';
+                }, 500);
+            }, 500);
+
+            updateProgress();
+        });
+    }
+
+    // Password strength checker
+    const passwordInput = document.getElementById('password');
+    const strengthBars = document.querySelectorAll('.strength-bar');
+
+    if (passwordInput) {
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strength = checkPasswordStrength(password);
+            updateStrengthIndicator(strength);
+            updateProgress();
+        });
+    }
+
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        if (password.length >= 8) strength++;
+        if (password.length >= 12) strength++;
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+        if (/\d/.test(password)) strength++;
+        if (/[^a-zA-Z\d]/.test(password)) strength++;
+        return Math.min(strength, 4);
+    }
+
+    function updateStrengthIndicator(strength) {
+        strengthBars.forEach((bar, index) => {
+            bar.classList.remove('weak', 'fair', 'good', 'strong');
+            if (index < strength) {
+                if (strength === 1) bar.classList.add('weak');
+                else if (strength === 2) bar.classList.add('fair');
+                else if (strength === 3) bar.classList.add('good');
+                else if (strength === 4) bar.classList.add('strong');
+            }
+        });
+    }
+
+    // Progress tracker
+    const form = document.getElementById('registerForm');
+    const inputs = form.querySelectorAll('input[required]');
+    const progressFill = document.getElementById('progressFill');
+    const progressPercent = document.getElementById('progressPercent');
+
+    function updateProgress() {
+        let filled = 0;
+        inputs.forEach(input => {
+            if (input.type === 'checkbox') {
+                if (input.checked) filled++;
+            } else if (input.value.trim() !== '') {
+                filled++;
+            }
+        });
+        const percent = (filled / inputs.length) * 100;
+        progressFill.style.width = percent + '%';
+        progressPercent.textContent = Math.round(percent) + '%';
+    }
+
+    inputs.forEach(input => {
+        input.addEventListener('input', updateProgress);
+        input.addEventListener('change', updateProgress);
+    });
+
+    // User type selection
+    const userTypeOptions = document.querySelectorAll('.user-type-option input[type="radio"]');
+    userTypeOptions.forEach(option => {
+        option.addEventListener('change', function() {
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            if (this.checked) {
+                this.closest('.user-type-option').querySelector('.option-card').classList.add('selected');
+            }
+        });
+    });
+
+    // Set initial selection
+    document.querySelector('.user-type-option input[type="radio"]:checked').dispatchEvent(new Event('change'));
+</script>
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Акаунт – Профил и настройки | JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/account.css}">
+</head>
+<body class="account-page">
+<header class="account-hero">
+    <div class="account-hero-bg">
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+        <div class="mesh-overlay"></div>
+    </div>
+    <div class="container hero-inner">
+        <div class="breadcrumbs">
+            <a th:href="@{/user-home}">Начало</a>
+            <span>/</span>
+            <span>Моят акаунт</span>
+        </div>
+        <div class="hero-content">
+            <div class="hero-title-block">
+                <h1>Моят акаунт</h1>
+                <p>Управлявай личния си профил, сигурността и активността в платформата.</p>
+            </div>
+            <div class="hero-actions">
+                <a class="hero-btn btn-outline" th:href="@{/profile/jobs}">
+                    <span>Моите кандидатури</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                </a>
+                <a class="hero-btn btn-primary" th:href="@{/profile/update}">
+                    <span>Обнови профил</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="account-main">
+    <div class="container account-layout">
+        <aside class="account-sidebar">
+            <div class="profile-card" id="profileCard">
+                <div class="profile-card-header">
+                    <div class="avatar bordered">
+                        <img th:if="${user != null && user.avatar != null}" th:src="${user.avatar}" alt="Avatar">
+                        <span class="avatar-fallback" th:if="${user == null || user.avatar == null}"
+                              th:text="${user != null ? user.username?.substring(0,1) : 'U'}">U</span>
+                    </div>
+                    <div class="profile-meta">
+                        <span class="profile-name" th:text="${user != null ? user.fullName : 'Ново име'}">Име</span>
+                        <span class="profile-role" th:text="${user != null ? user.title : 'Кандидат'}">Кандидат</span>
+                    </div>
+                </div>
+                <div class="profile-progress">
+                    <div class="progress-head">
+                        <span>Завършеност на профила</span>
+                        <span class="progress-value" th:text="${userProfileCompletion != null ? userProfileCompletion + '%' : '70%'}">70%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"
+                             th:style="'width:' + (userProfileCompletion != null ? userProfileCompletion : 70) + '%'"></div>
+                    </div>
+                    <p class="progress-info">Попълни липсващите секции за по-добри предложения.</p>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="stat-value" th:text="${userStats != null ? userStats.applied : 0}">0</span>
+                        <span class="stat-label">Кандидатури</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" th:text="${userStats != null ? userStats.matches : 0}">0</span>
+                        <span class="stat-label">Съвпадения</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" th:text="${userStats != null ? userStats.savedJobs : 0}">0</span>
+                        <span class="stat-label">Запазени</span>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn-tertiary dropdown-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 20h9"></path>
+                            <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"></path>
+                        </svg>
+                        <span>Управление</span>
+                        <svg class="dropdown-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <div class="profile-mini-menu" role="menu">
+                        <button class="profile-mini-item" type="button" data-tab-target="tab-security">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Сигурност</span>
+                        </button>
+                        <button class="profile-mini-item" type="button" data-tab-target="tab-preferences">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 6v12M6 12h12" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Предпочитания</span>
+                        </button>
+                        <a class="profile-mini-item" th:href="@{/profile/public}" role="menuitem">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 7v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7"></path>
+                                <path d="M8 7V5a4 4 0 1 1 8 0v2"></path>
+                            </svg>
+                            <span>Публичен профил</span>
+                        </a>
+                        <a class="profile-mini-item" th:href="@{/profile/resume}" role="menuitem">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 13c3 0 5-1.5 5-4.5S12 4 9 4 4 5.5 4 8.5 6 13 9 13Z"></path>
+                                <path d="M9 13v8"></path>
+                                <path d="M5 21h8"></path>
+                            </svg>
+                            <span>CV / Портфолио</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-section">
+                <p class="section-label">Бърз достъп</p>
+                <ul class="sidebar-links">
+                    <li><button class="sidebar-link tab-button is-active" type="button" data-tab="tab-profile">
+                        <span>Профил и данни</span>
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button></li>
+                    <li><button class="sidebar-link tab-button" type="button" data-tab="tab-security">
+                        <span>Сигурност</span>
+                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10З" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button></li>
+                    <li><button class="sidebar-link tab-button" type="button" data-tab="tab-preferences">
+                        <span>Предпочитания</span>
+                        <svg viewBox="0 0 24 24"><path d="M12 6v12M6 12h12" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button></li>
+                    <li><button class="sidebar-link tab-button" type="button" data-tab="tab-activity">
+                        <span>Активност</span>
+                        <svg viewBox="0 0 24 24"><path d="M3 12h3l3 7 4-14 3 7h4" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-section tips-card">
+                <p class="section-label">Препоръка</p>
+                <p>Поддържай профила си актуален и активирай известия, за да не пропускаш нови позиции.</p>
+                <a th:href="@{/alerts}" class="btn-ghost">
+                    Управлявай известия
+                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
+        </aside>
+
+        <section class="account-content">
+            <div class="content-head">
+                <div>
+                    <h2>Настройки на акаунта</h2>
+                    <p>Актуализирай личните си данни, парола и начин на комуникация.</p>
+                </div>
+                <div class="content-actions">
+                    <button class="btn-secondary" type="button">
+                        <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V7h18v12a2 2 0 0 1-2 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M16 3v4H8V3" fill="none" stroke="currentColor" stroke-width="2"></path></svg>
+                        <span>Експортирай данни</span>
+                    </button>
+                    <button class="btn-danger ghost" type="button">
+                        <svg viewBox="0 0 24 24"><path d="m3 3 18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path d="M19 19H5a2 2 0 0 1-2-2V7h5m4 0h9v10a2 2 0 0 1-2 2H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
+                        <span>Деактивирай акаунт</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab-panels">
+                    <div class="tab-panel is-active" id="tab-profile" role="tabpanel">
+                        <form class="card form-card" th:action="@{/account/profile}" method="post">
+                            <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}"/>
+                            <div class="card-head">
+                                <div>
+                                    <h3>Лични данни</h3>
+                                    <p>Актуализирай основната информация, която се показва в профила ти.</p>
+                                </div>
+                                <button class="btn-primary" type="submit">
+                                    <span>Запази промените</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                            </div>
+                            <div class="form-grid">
+                                <label class="form-field">
+                                    <span>Пълно име</span>
+                                    <input type="text" name="fullName" placeholder="Име и фамилия" th:value="${user != null ? user.fullName : ''}">
+                                </label>
+                                <label class="form-field">
+                                    <span>Позиция / заглавие</span>
+                                    <input type="text" name="title" placeholder="Пример: Senior Java Developer" th:value="${user != null ? user.title : ''}">
+                                </label>
+                                <label class="form-field">
+                                    <span>Имейл</span>
+                                    <input type="email" name="email" placeholder="name@mail.com" th:value="${user != null ? user.email : ''}">
+                                </label>
+                                <label class="form-field">
+                                    <span>Телефон</span>
+                                    <input type="tel" name="phone" placeholder="+359 ..." th:value="${user != null ? user.phone : ''}">
+                                </label>
+                                <label class="form-field full">
+                                    <span>Резюме</span>
+                                    <textarea name="summary" rows="4" placeholder="Разкажи за опита си" th:text="${user != null ? user.summary : ''}"></textarea>
+                                </label>
+                                <label class="form-field full">
+                                    <span>Основни умения</span>
+                                    <input type="text" name="skills" placeholder="Java, Spring Boot, Docker" th:value="${user != null ? user.skills : ''}">
+                                </label>
+                            </div>
+                        </form>
+
+                        <div class="card experience-card">
+                            <div class="card-head">
+                                <div>
+                                    <h3>Професионален опит</h3>
+                                    <p>Поддържай последните си роли, за да получаваш релевантни предложения.</p>
+                                </div>
+                                <a class="btn-secondary small" th:href="@{/profile/experience}">
+                                    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    <span>Добави позиция</span>
+                                </a>
+                            </div>
+                            <div class="experience-list">
+                                <article class="experience" th:each="exp : ${experiences}">
+                                    <div class="experience-main">
+                                        <h4 th:text="${exp.role}">Software Engineer</h4>
+                                        <span class="company" th:text="${exp.company}">TechWave</span>
+                                        <span class="period" th:text="${exp.period}">2023 – Настояще</span>
+                                    </div>
+                                    <p class="experience-desc" th:text="${exp.summary}">
+                                        Отговарям за разработката на мащабируеми услуги и автоматизация на CI/CD процеси.
+                                    </p>
+                                    <div class="experience-tags">
+                                        <span class="tag" th:each="skill : ${exp.skills}" th:text="${skill}">Java</span>
+                                    </div>
+                                </article>
+                                <article class="experience placeholder" th:if="${experiences == null || #lists.isEmpty(experiences)}">
+                                    <h4>Добави първата си позиция</h4>
+                                    <p>Започни с последното работно място, за да получиш по-точни предложения.</p>
+                                    <a th:href="@{/profile/experience}" class="btn-outline small">Добави опит</a>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" id="tab-security" role="tabpanel">
+                        <form class="card form-card" th:action="@{/account/security}" method="post">
+                            <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}"/>
+                            <div class="card-head">
+                                <div>
+                                    <h3>Сигурност на акаунта</h3>
+                                    <p>Поддържай паролата и метода си за верификация актуални.</p>
+                                </div>
+                                <button class="btn-primary" type="submit">
+                                    <span>Обнови сигурността</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                            </div>
+                            <div class="form-grid">
+                                <label class="form-field">
+                                    <span>Текуща парола</span>
+                                    <input type="password" name="currentPassword" placeholder="••••••••">
+                                </label>
+                                <label class="form-field">
+                                    <span>Нова парола</span>
+                                    <input type="password" name="newPassword" placeholder="Минимум 10 символа">
+                                </label>
+                                <label class="form-field">
+                                    <span>Потвърди новата парола</span>
+                                    <input type="password" name="confirmPassword" placeholder="Повтори новата парола">
+                                </label>
+                                <div class="form-field full">
+                                    <span>Двуфакторна автентикация</span>
+                                    <div class="toggle-row">
+                                        <label class="switch">
+                                            <input type="checkbox" name="twoFactorEnabled" th:checked="${securitySettings?.twoFactorEnabled}">
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                        <div class="toggle-copy">
+                                            <strong>SMS / Authenticator</strong>
+                                            <p>Получавай код за потвърждение при всяко влизане.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="card sessions-card">
+                            <div class="card-head">
+                                <div>
+                                    <h3>Активни сесии</h3>
+                                    <p>Прегледай устройствата, от които е активиран акаунтът ти.</p>
+                                </div>
+                                <button class="btn-outline small" type="button">Изход от всички</button>
+                            </div>
+                            <ul class="sessions-list">
+                                <li th:each="session : ${sessions}">
+                                    <div class="device">
+                                        <span class="device-icon">
+                                            <svg viewBox="0 0 24 24"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="2"></path><path d="M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+                                        </span>
+                                        <div>
+                                            <p class="device-name" th:text="${session.device}">MacBook Pro · Chrome</p>
+                                            <p class="device-meta">
+                                                <span th:text="${session.location}">Sofia, BG</span>
+                                                <span>•</span>
+                                                <span th:text="${session.lastActive}">Последно активно: 12:34</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button class="session-action" type="button">Изход</button>
+                                </li>
+                                <li th:if="${sessions == null || #lists.isEmpty(sessions)}" class="empty-state">
+                                    <p>Няма други активни сесии.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" id="tab-preferences" role="tabpanel">
+                        <form class="card form-card" th:action="@{/account/preferences}" method="post">
+                            <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}"/>
+                            <div class="card-head">
+                                <div>
+                                    <h3>Имейл и известия</h3>
+                                    <p>Избери кога и по какви теми да получаваш известия.</p>
+                                </div>
+                                <button class="btn-primary" type="submit">
+                                    <span>Запази предпочитанията</span>
+                                    <svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                            </div>
+                            <div class="preferences-grid">
+                                <div class="preference-card">
+                                    <div class="pref-head">
+                                        <h4>Нови обяви</h4>
+                                        <label class="switch">
+                                            <input type="checkbox" name="prefNewJobs" th:checked="${preferences?.newJobs}">
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                    <p>Седмичен подбор според уменията и интересите ти.</p>
+                                </div>
+                                <div class="preference-card">
+                                    <div class="pref-head">
+                                        <h4>Покани от работодатели</h4>
+                                        <label class="switch">
+                                            <input type="checkbox" name="prefInvites" th:checked="${preferences?.invites}">
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                    <p>Получавай директни покани, когато профилът ти съвпада.</p>
+                                </div>
+                                <div class="preference-card">
+                                    <div class="pref-head">
+                                        <h4>Съобщения</h4>
+                                        <label class="switch">
+                                            <input type="checkbox" name="prefMessages" th:checked="${preferences?.messages}">
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                    <p>Бъди информиран при нови съобщения и коментари.</p>
+                                </div>
+                                <div class="preference-card">
+                                    <div class="pref-head">
+                                        <h4>Новини и ресурси</h4>
+                                        <label class="switch">
+                                            <input type="checkbox" name="prefNews" th:checked="${preferences?.news}">
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                    <p>Получавай полезни материали за кариерно развитие.</p>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="card language-card">
+                            <div class="card-head">
+                                <div>
+                                    <h3>Език и визуализация</h3>
+                                    <p>Настройки на езика и начина, по който получаваш известия.</p>
+                                </div>
+                            </div>
+                            <div class="form-grid">
+                                <label class="form-field">
+                                    <span>Предпочитан език</span>
+                                    <select name="language">
+                                        <option value="bg" th:selected="${preferences?.language == 'bg'}">Български</option>
+                                        <option value="en" th:selected="${preferences?.language == 'en'}">English</option>
+                                        <option value="de" th:selected="${preferences?.language == 'de'}">Deutsch</option>
+                                    </select>
+                                </label>
+                                <label class="form-field">
+                                    <span>Часова зона</span>
+                                    <select name="timezone">
+                                        <option value="Europe/Sofia" th:selected="${preferences?.timezone == 'Europe/Sofia'}">Europe/Sofia (GMT+2)</option>
+                                        <option value="Europe/Berlin" th:selected="${preferences?.timezone == 'Europe/Berlin'}">Europe/Berlin (GMT+1)</option>
+                                        <option value="UTC" th:selected="${preferences?.timezone == 'UTC'}">UTC</option>
+                                    </select>
+                                </label>
+                                <label class="form-field full">
+                                    <span>Канал за приоритетни известия</span>
+                                    <div class="radio-group">
+                                        <label>
+                                            <input type="radio" name="priorityChannel" value="email" th:checked="${preferences?.priorityChannel == 'email'}">
+                                            <span>Email</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="priorityChannel" value="sms" th:checked="${preferences?.priorityChannel == 'sms'}">
+                                            <span>SMS</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="priorityChannel" value="app" th:checked="${preferences?.priorityChannel == 'app'}">
+                                            <span>В приложението</span>
+                                        </label>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" id="tab-activity" role="tabpanel">
+                        <div class="card activity-card">
+                            <div class="card-head">
+                                <div>
+                                    <h3>История на активността</h3>
+                                    <p>Проследявай последните действия и събития, свързани с твоите кандидатури.</p>
+                                </div>
+                                <button class="btn-outline small" type="button">Експортирай</button>
+                            </div>
+                            <ul class="timeline">
+                                <li th:each="event : ${activity}">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-header">
+                                            <h4 th:text="${event.title}">Кандидатства на позиция</h4>
+                                            <span class="timeline-time" th:text="${event.time}">преди 2 дни</span>
+                                        </div>
+                                        <p th:text="${event.description}">Изпрати кандидатура за Senior Java Engineer в CloudForge.</p>
+                                        <div class="timeline-meta">
+                                            <span th:text="${event.meta}">Статус: Изпратено</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li th:if="${activity == null || #lists.isEmpty(activity)}" class="timeline-empty">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <h4>Няма активност</h4>
+                                        <p>Започни да кандидатстваш по обяви, за да виждаш историята си тук.</p>
+                                        <a class="btn-primary small" th:href="@{/jobs}">Разгледай обяви</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card downloads-card">
+                            <div class="card-head">
+                                <div>
+                                    <h3>Документи и файлове</h3>
+                                    <p>Управлявай качените CV-та, мотивационни писма и допълнителни документи.</p>
+                                </div>
+                                <a class="btn-outline small" th:href="@{/profile/resume}">Качи нов документ</a>
+                            </div>
+                            <div class="files-grid">
+                                <article class="file-row" th:each="file : ${documents}">
+                                    <div class="file-icon">
+                                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" fill="none" stroke="currentColor" stroke-width="2"></path><path d="M14 2v6h6" fill="none" stroke="currentColor" stroke-width="2"></path></svg>
+                                    </div>
+                                    <div class="file-meta">
+                                        <p class="file-name" th:text="${file.name}">CV_2024.pdf</p>
+                                        <span class="file-info">
+                                            <span th:text="${file.size}">1.2 MB</span>
+                                            <span>•</span>
+                                            <span th:text="${file.uploaded}">Качен: 12.04.2024</span>
+                                        </span>
+                                    </div>
+                                    <div class="file-actions">
+                                        <a th:href="@{/files/{id}/download(id=${file.id})}" class="btn-ghost">Изтегли</a>
+                                        <button class="btn-ghost danger" type="button">Изтрий</button>
+                                    </div>
+                                </article>
+                                <article class="file-row placeholder" th:if="${documents == null || #lists.isEmpty(documents)}">
+                                    <div class="file-icon">
+                                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16" fill="none" stroke="currentColor" stroke-width="2"></path><path d="M14 2v6h6" fill="none" stroke="currentColor" stroke-width="2"></path><path d="M9 15h6M9 19h6M9 11h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+                                    </div>
+                                    <div class="file-meta">
+                                        <p class="file-name">Все още няма качени документи.</p>
+                                        <span class="file-info">Качи CV или мотивационно писмо, за да кандидатстваш по-бързо.</span>
+                                    </div>
+                                    <a class="btn-primary small" th:href="@{/profile/resume}">Качи файл</a>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    const normalizeTabId = (value) => {
+        if (!value) {
+            return null;
+        }
+        return value.startsWith('tab-') ? value : `tab-${value}`;
+    };
+
+    const activateTab = (targetId) => {
+        const tabId = normalizeTabId(targetId);
+        if (!tabId) {
+            return;
+        }
+        const targetButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+        const targetPanel = document.getElementById(tabId);
+        if (!targetButton || !targetPanel) {
+            return;
+        }
+
+        tabButtons.forEach(btn => btn.classList.toggle('is-active', btn === targetButton));
+        tabPanels.forEach(panel => panel.classList.toggle('is-active', panel === targetPanel));
+
+        const url = new URL(window.location.href);
+        url.searchParams.set('tab', tabId);
+        history.replaceState(null, '', url);
+    };
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+    });
+
+    const initialTab = normalizeTabId(new URLSearchParams(window.location.search).get('tab') || window.location.hash.replace('#', ''));
+    if (initialTab && document.getElementById(initialTab)) {
+        activateTab(initialTab);
+    } else if (tabButtons.length) {
+        activateTab(tabButtons[0].dataset.tab);
+    }
+
+    window.addEventListener('hashchange', () => {
+        const hashTab = normalizeTabId(window.location.hash.replace('#', ''));
+        if (hashTab) {
+            activateTab(hashTab);
+        }
+    });
+
+    const profileCard = document.getElementById('profileCard');
+    const dropdownTrigger = profileCard?.querySelector('.dropdown-trigger');
+    const miniMenu = profileCard?.querySelector('.profile-mini-menu');
+
+    function closeMiniMenu() {
+        if (!miniMenu || !dropdownTrigger) return;
+        miniMenu.classList.remove('is-open');
+        dropdownTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    dropdownTrigger?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = miniMenu?.classList.toggle('is-open');
+        dropdownTrigger.setAttribute('aria-expanded', String(!!isOpen));
+    });
+
+    miniMenu?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const target = event.target.closest('[data-tab-target]');
+        if (target) {
+            activateTab(target.dataset.tabTarget);
+            closeMiniMenu();
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        if (profileCard && !profileCard.contains(event.target)) {
+            closeMiniMenu();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeMiniMenu();
+        }
+    });
+</script>
+</body>
+</html>
