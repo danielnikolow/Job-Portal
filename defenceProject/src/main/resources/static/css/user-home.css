@@ -90,6 +90,20 @@
   background: linear-gradient(135deg, var(--primary), var(--secondary));
 }
 
+.user-home-page .container {
+    max-width: 1600px; /* или 1800px, 1920px - както предпочиташ */
+}
+
+/* Или ако искаш да е почти пълна ширина */
+.user-home-page .container {
+    max-width: 95%;
+}
+
+/* Или фиксирана ширина */
+.user-home-page .container {
+    max-width: 1800px;
+}
+
 .profile-trigger .trigger-name {
   display: flex;
   flex-direction: column;
@@ -801,5 +815,3 @@ image.png
 .pill.reveal { opacity: 1; transform: translateY(0); }
 .pill-title { font-weight: 700; color: var(--gray-900); }
 .pill-sub { color: var(--gray-600); font-size: var(--font-size-sm); }
-
-
