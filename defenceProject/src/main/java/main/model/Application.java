@@ -24,4 +24,7 @@ public class Application {
     @JoinColumn(name = "job")
     private Job job;
 
+    private String status;
+
+    private LocalDate submittedOn;
 }

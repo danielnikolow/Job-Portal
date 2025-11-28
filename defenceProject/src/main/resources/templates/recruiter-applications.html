@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Кандидатури | JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/recruiter-applications.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="apps-page">
+
+<header class="apps-header">
+    <div class="container flex-between">
+        <div>
+            <p class="page-label">Кандидати</p>
+            <h1>Център за кандидатури</h1>
+            <p class="subtitle">Проследявай и управлявай кандидатурите си в реално време.</p>
+        </div>
+        <div class="stats">
+            <div class="stat">
+                <span class="label">Общо кандидатури</span>
+                <span class="value" th:text="${totalApplications}">48</span>
+            </div>
+            <div class="stat">
+                <span class="label">Очакват преглед</span>
+                <span class="value accent">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Насрочени интервюта</span>
+                <span class="value">0</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="apps-main container">
+<!--    <section class="filters-card">-->
+<!--        <form class="filters-grid" th:action="@{/recruiter-applications}" method="get">-->
+<!--            <label class="filter-field">-->
+<!--                <span>Ключова дума</span>-->
+<!--                <div class="input-wrapper">-->
+<!--                    <input type="text" name="keyword" placeholder="Име на кандидат или позиция">-->
+<!--                </div>-->
+<!--            </label>-->
+
+<!--            <label class="filter-field">-->
+<!--                <span>Статус</span>-->
+<!--                <div class="select-wrapper">-->
+<!--                    <select name="status">-->
+<!--                        <option value="">Всички</option>-->
+<!--                        <option value="NEW">Нова</option>-->
+<!--                        <option value="IN_REVIEW">В преглед</option>-->
+<!--                        <option value="INTERVIEW">Интервю</option>-->
+<!--                        <option value="OFFER">Оферта</option>-->
+<!--                        <option value="REJECTED">Отказана</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </label>-->
+
+<!--            <label class="filter-field">-->
+<!--                <span>Позиция</span>-->
+<!--                <div class="select-wrapper">-->
+<!--                    <select name="jobId">-->
+<!--                        <option value="">Всички позиции</option>-->
+<!--                        <option th:each="job : ${jobs}" th:value="${job.id}" th:text="${job.title}">Senior Java</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </label>-->
+
+<!--            <label class="filter-field">-->
+<!--                <span>Период</span>-->
+<!--                <div class="select-wrapper">-->
+<!--                    <select name="submittedWithin">-->
+<!--                        <option value="">Без значение</option>-->
+<!--                        <option value="7">Последната седмица</option>-->
+<!--                        <option value="30">Последния месец</option>-->
+<!--                        <option value="90">Последните 3 месеца</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </label>-->
+
+<!--            <div class="filter-actions">-->
+<!--                <button type="submit" class="btn primary">Приложи филтри</button>-->
+<!--                <button type="reset" class="btn ghost">Изчисти</button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </section>-->
+
+    <section class="apps-grid" th:if="${applications}">
+        <article class="application-card" th:each="app : ${applications}">
+            <header class="card-head">
+                <div>
+                    <h3 class="value" th:text="${app.job.title}">Senior Java Developer</h3></div>
+<!--                <span class="status" th:text="${app.status}">В преглед</span>-->
+            </header>
+
+<!--            <div class="card-body">-->
+<!--                <div class="info-row">-->
+<!--&lt;!&ndash;                    <span class="label">Позиция</span>&ndash;&gt;-->
+<!--                    <span>Иван Иванов</span>-->
+<!--                    <span>Ivan@mail.com</span>-->
+<!--                </div>-->
+<!--                <div class="info-row">-->
+<!--&lt;!&ndash;                    <span class="label">Подадена на</span>&ndash;&gt;-->
+<!--                    <span class="value" th:text="${app.submittedOn}">14.02.2025</span>-->
+<!--                </div>-->
+<!--&lt;!&ndash;                <div class="tags">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <span class="tag" th:each="skill : ${app.skills}" th:text="${skill}">Java</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--            </div>-->
+            <div class="card-body">
+<!--                <div class="info-row">-->
+<!--                    <span th:text="${app.user.firstName + ' ' + app.user.lastName}">Иван Иванов</span>-->
+<!--                </div>-->
+                <div class="info-row">
+                    <!--                    <span class="value" th:text="${app.submittedOn}">14.02.2025</span>-->
+                    <strong>Подадена от:</strong> <span th:text="${app.user.firstName + ' ' + app.user.lastName}">Иван Иванов</span>
+                </div>
+                <div class="info-row">
+<!--                    <span>Ivan@mail.com</span>-->
+                </div>
+                <div class="info-row">
+<!--                    <span class="value" th:text="${app.submittedOn}">14.02.2025</span>-->
+                    <strong>Подадена на:</strong> <span th:text="${app.submittedOn}">14.02.2025</span>
+                </div>
+            </div>
+            <footer class="card-foot">
+                <div class="foot-actions">
+                    <button type="button" class="btn ghost">Виж CV</button>
+<!--                    <button type="button" class="btn ghost">Бележки</button>-->
+                </div>
+                <form class="status-form" th:action="@{'/recruiter-applications/' + ${app.id}}" method="post">
+                    <input type="hidden" name="_method" value="PUT">
+                    <select name="status">
+                        <option value="NEW">Нова</option>
+                        <option value="В преглед">В преглед</option>
+                        <option value="Интервю">Интервю</option>
+                        <option value="Оферта">Оферта</option>
+                        <option value="Отказана">Отказана</option>
+                    </select>
+                    <button type="submit" class="btn primary">Запази</button>
+                </form>
+            </footer>
+        </article>
+    </section>
+
+    <section class="empty-state" th:if="${applications == null || #lists.isEmpty(applications)}">
+        <div class="empty-card">
+            <h3>Все още няма кандидатури</h3>
+            <p>Създай обява ако не си или провери по-късно.</p>
+            <!--            <h3>Няма кандидатури по тези критерии</h3>-->
+<!--            <p>Промени филтрите или провери по-късно.</p>-->
+            <div class="empty-actions">
+                <a th:href="@{/recruiter/jobs/new}" class="btn primary">Създай нова обява</a>
+                <a th:href="@{/user-home}" class="btn primary">Преглевай позиции</a>
+
+                <!--                <button type="button" class="btn ghost">Прегледай всички позиции</button>-->
+            </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
