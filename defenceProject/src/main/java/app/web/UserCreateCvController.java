@@ -1,10 +1,7 @@
 package app.web;
 
-import app.microservice.client.dto.CvRequest;
-import app.microservice.service.CvService;
-import app.model.Cv;
-import app.model.User;
-import app.repository.CvRepository;
+import app.cv.client.dto.CvRequest;
+import app.cv.service.CvService;
 import app.repository.UserRepository;
 import app.security.UserData;
 import jakarta.validation.Valid;
@@ -13,13 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
