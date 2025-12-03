@@ -1,0 +1,635 @@
+    <!DOCTYPE html>
+    <html lang="bg" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>Създай CV | JobPortal</title>
+        <link rel="stylesheet" href="/css/create-cv.css">
+    </head>
+    <body class="cv-builder">
+        <header class="cv-hero">
+            <div class="hero-content">
+                <p class="eyebrow">AI подсказки • Smart Templates</p>
+                <h1>Създай професионално CV за минути</h1>
+                <p class="lead">Личен бренд, модерна графика и структурирани секции, готови за експорт или споделяне.</p>
+            </div>
+    <!--        <div class="hero-actions">-->
+    <!--            <button class="btn-primary">Запази чернова</button>-->
+    <!--            <button class="btn-outline">Импорт от LinkedIn</button>-->
+    <!--        </div>-->
+        </header>
+
+        <main class="cv-layout">
+            <!-- Progress / Wizard Sidebar -->
+            <aside class="cv-sidebar">
+    <!--            <div class="wizard">-->
+    <!--                <div class="wizard-step active">-->
+    <!--                    <span>1</span>-->
+    <!--                    <div>-->
+    <!--                        <p>Основни данни</p>-->
+    <!--                        <small>Контакти, позиция, резюме</small>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--                <div class="wizard-step">-->
+    <!--                    <span>2</span>-->
+    <!--                    <div>-->
+    <!--                        <p>Опит</p>-->
+    <!--                        <small>Компании, постижения</small>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--                <div class="wizard-step">-->
+    <!--                    <span>3</span>-->
+    <!--                    <div>-->
+    <!--                        <p>Образование</p>-->
+    <!--                        <small>Университети, сертификации</small>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--                <div class="wizard-step">-->
+    <!--                    <span>4</span>-->
+    <!--                    <div>-->
+    <!--                        <p>Умения</p>-->
+    <!--                        <small>Технически и soft skills</small>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--                <div class="wizard-step">-->
+    <!--                    <span>5</span>-->
+    <!--                    <div>-->
+    <!--                        <p>Финални настройки</p>-->
+    <!--                        <small>Тема, експорт, share</small>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+                <div class="cv-library">
+                    <div class="library-header">
+                        <h2>Моите CV-та</h2>
+    <!--                    <button type="button" class="btn-create-new" onclick="showCreateForm()">-->
+    <!--                        <i class="fas fa-plus"></i>-->
+    <!--                        Ново CV-->
+    <!--                    </button>-->
+                    </div>
+
+                    <!-- Example CV items - replace with Thymeleaf loop -->
+                    <div class="cv-list">
+                        <a href="/create-cv " class="cv-item cv-item-create">
+                            <div class="cv-preview-mini">
+                                <div class="cv-header-mini">
+                                    <h4>Създай ново CV</h4>
+                                </div>
+                            </div>
+                        </a>
+                        <div th:each="cv : ${userCvs}" class="cv-item">
+                            <div class="cv-preview-mini">
+                                <div class="cv-header-mini">
+                                    <h4 th:text="${cv.cvName}">Име</h4>
+    <!--                                <p th:text="${cv.birthDate}">Позиция</p>-->
+                                </div>
+                                <div class="cv-meta">
+                                    <span class="cv-date" th:text="'Създадено: ' + ${#temporals.format(cv.createdAt, 'dd.MM.yyyy')}">Дата</span>
+                                </div>
+                            </div>
+                            <div class="cv-actions">
+    <!--                            <button type="button"-->
+    <!--                                    class="btn-edit"-->
+    <!--                                    onclick="editCv('[[${cv.id}]]')">-->
+    <!--                                Редактирай-->
+    <!--                            </button>-->
+                                <a th:href="@{'/edit-cv/' + ${cv.id}}"
+                                   class="btn-edit"
+                                   style="text-decoration: none; display: inline-block;">
+                                    Редактирай
+                                </a>
+    <!--                            <a th:href="@{'/edit-cv/' + ${cv.id}}" -->
+    <!--                               class="btn-edit"-->
+    <!--                               style="text-decoration: none; display: inline-block;">-->
+    <!--                                Редактирай-->
+    <!--                            </a>-->
+    <!--                            <button type="button"-->
+    <!--                                    class="btn-download"-->
+    <!--                                    onclick="downloadCv('[[${cv.id}]]')">-->
+    <!--                                PDF-->
+    <!--                            </button>-->
+                            </div>
+                        </div>
+
+                        <!-- Empty state when no CVs -->
+                        <div class="empty-state" style="display: none;">
+                            <div class="empty-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <h3>Все още няма създадени CV-та</h3>
+                            <p>Започни като създадеш първото си CV</p>
+                            <button type="button" class="btn-primary" onclick="showCreateForm()">
+                                Създай CV
+                            </button>
+                        </div>
+                    </div>
+    <!--                <div class="helper-card">-->
+    <!--                    <h4>AI помощник</h4>-->
+    <!--                    <p>Питай за подобрения, подсказки за текст и оптимизация на ключови думи.</p>-->
+    <!--                    <button class="btn-ghost">Стартирай чат</button>-->
+    <!--                </div>-->
+                </div>
+            </aside>
+
+            <!-- Form + Live Preview -->
+            <section class="cv-workspace">
+                <div class="form-panel">
+                    <form class="cv-form" novalidate th:action="@{/create-cv/new}" th:object="${cvRequest}" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <input type="hidden" name="_method" value="put">
+
+                        <!-- Step 1: Основни данни -->
+                        <div class="form-step" data-step="0">
+                            <h2>Основни данни</h2>
+                            <div class="form-grid">
+                                <label>Пълно име
+                                    <input type="text" placeholder="Иван Иванов" th:field="*{fullName}">
+                                </label>
+                                <label>Дата на раждане
+                                    <input type="date" th:field="*{birthDate}">
+                                </label>
+                                <label>Email
+                                    <input type="email" placeholder="ivan@example.com" th:field="*{email}">
+                                </label>
+                                <label>Телефон
+                                    <input type="tel" placeholder="+359 88 123 4567" th:field="*{phone}">
+                                </label>
+                                <label>Локация
+                                    <input type="text" placeholder="София, България" th:field="*{location}">
+                                </label>
+                            </div>
+                            <label>LinkedIn / GitHub
+                                <input type="url" placeholder="https://linkedin.com/in/ivan" th:field="*{linkedInUrl}">
+                            </label>
+                            <label>Професионално резюме
+                                <textarea rows="5" placeholder="Кратко представяне + ключови постижения..." th:field="*{summary}"></textarea>
+                            </label>
+                            <div class="actions-row">
+                                <button type="button" class="btn-outline">Добави нова секция</button>
+                                <button type="button" class="btn-primary" onclick="goToStep(1); return false;">Продължи към Опит</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Опит -->
+                        <div class="form-step" data-step="1" style="display: none;">
+                            <h2>Опит</h2>
+                            <div class="experience-item">
+                                <label>Длъжност
+                                    <input type="text" placeholder="Senior Java Developer" th:field="*{jobTitle}">
+                                </label>
+                                <label>Компания
+                                    <input type="text" placeholder="TechWave" th:field="*{company}">
+                                </label>
+                                <div class="form-grid">
+                                    <label>От дата
+                                        <input type="month" placeholder="2021-01" th:field="*{experienceStartDate}">
+                                    </label>
+                                    <label>До дата
+                                        <input type="month" placeholder="2024-12" th:field="*{experienceEndDate}">
+                                    </label>
+                                </div>
+                                <label>Описание
+                                    <textarea rows="4" placeholder="Описание на отговорностите и постиженията..." th:field="*{experienceDescription}"></textarea>
+                                </label>
+                            </div>
+                            <div class="actions-row">
+                                <button type="button" class="btn-outline">Добави друга позиция</button>
+                                <button type="button" class="btn-outline" onclick="goToStep(0); return false;">Назад</button>
+                                <button type="button" class="btn-primary" onclick="goToStep(2); return false;">Продължи към Образование</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Образование -->
+                        <div class="form-step" data-step="2" style="display: none;">
+                            <h2>Образование</h2>
+                            <div class="education-item">
+                                <label>Специалност / Степен
+                                    <input type="text" placeholder="Компютърни науки" th:field="*{degree}">
+                                </label>
+                                <label>Университет / Училище
+                                    <input type="text" placeholder="Софийски университет" th:field="*{school}">
+                                </label>
+                                <div class="form-grid">
+                                    <label>От дата
+                                        <input type="month" placeholder="2015-09" th:field="*{educationStartDate}">
+                                    </label>
+                                    <label>До дата
+                                        <input type="month" placeholder="2019-06" th:field="*{educationEndDate}">
+                                    </label>
+                                </div>
+                                <label>Допълнителна информация
+                                    <textarea rows="3" placeholder="Диплома, сертификати, постижения..." th:field="*{educationInfo}"></textarea>
+                                </label>
+                            </div>
+                            <div class="actions-row">
+                                <button type="button" class="btn-outline">Добави друго образование</button>
+                                <button type="button" class="btn-outline" onclick="goToStep(1); return false;">Назад</button>
+                                <button type="button" class="btn-primary" onclick="goToStep(3); return false;">Продължи към Умения</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Умения -->
+                        <div class="form-step" data-step="3" style="display: none;">
+                            <h2>Умения</h2>
+                            <label>Технически умения
+                                <input type="text" placeholder="Java, Spring Boot, Docker, Kubernetes (раздели със запетая)" th:field="*{technicalSkills}">
+                            </label>
+                            <label>Езици
+                                <input type="text" placeholder="Български (роден), Английски (C1)" th:field="*{languages}">
+                            </label>
+                            <div class="actions-row">
+                                <button type="button" class="btn-outline" onclick="goToStep(2); return false;">Назад</button>
+                                <button type="button" class="btn-primary" onclick="goToStep(4); return false;">Продължи към Финални настройки</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Финални настройки -->
+                        <div class="form-step" data-step="4" style="display: none;">
+                            <h2>Име на Cv</h2>
+                            <label>Име на Cv
+                                <input type="text" placeholder="Именувай своето Cv" th:field="*{cvName}">
+                            </label>
+                            <div style="text-align: center; padding: 48px 24px;">
+                                <button type="button" class="btn-outline" onclick="goToStep(3); return false;">Назад</button>
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button type="button" class="btn-primary" style="font-size: 1.1rem; padding: 16px 32px;" onclick="submitForm('/create-cv/update-cv')">
+                                    Запази промени
+                                </button>
+                                <button type="button" class="btn-primary" style="font-size: 1.1rem; padding: 16px 32px;" onclick="submitForm('/create-cv/create-new')">
+                                    Създай ново Cv
+                                </button>
+                                <button type="button" class="btn-primary" style="font-size: 1.1rem; padding: 16px 32px;" onclick="submitForm('/create-cv/download-pdf')">
+                                    Изтегли PDF
+                                </button>
+                            </div>
+                        </div>
+    <!--                    <div class="form-step" data-step="4" style="display: none;">-->
+    <!--                        <h2>Финални настройки</h2>-->
+    <!--                        <label>Избери тема-->
+    <!--                            <select th:field="*{theme}">-->
+    <!--                                <option value="modern">Модерна</option>-->
+    <!--                                <option value="classic">Класическа</option>-->
+    <!--                                <option value="minimal">Минималистична</option>-->
+    <!--                            </select>-->
+    <!--                        </label>-->
+    <!--                        <label>Цвят на акцент-->
+    <!--                            <input type="color" value="#7c5dfa" th:field="*{accentColor}">-->
+    <!--                        </label>-->
+    <!--                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
+    <!--                        <div class="actions-row">-->
+    <!--                            <button type="button" class="btn-outline" onclick="goToStep(3); return false;">Назад</button>-->
+    <!--                            <button type="submit" class="btn-primary">Завърши CV</button>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+                    </form>
+                </div>
+
+                <div class="preview-panel">
+                    <header>
+                        <div>
+                            <h3 id="previewName">Иван Иванов</h3>
+                            <p id="previewTitle">Senior Java Developer</p>
+                        </div>
+                        <span class="badge">Live Preview</span>
+                    </header>
+                    <div class="preview-body">
+                        <section>
+                            <h4>Контакт</h4>
+                            <p>ivan@example.com · +359 88 123 4567 · София</p>
+                            <p>linkedin.com/in/ivan</p>
+                        </section>
+                        <section>
+                            <h4>Резюме</h4>
+                            <p>Професионален бекенд инженер с 7+ години опит, фокусиран върху
+                                облачни платформи, микросървиси и решения с висока достъпност.</p>
+                        </section>
+                        <section>
+                            <h4>Опит</h4>
+                            <ul id="experienceList">
+                                <li>
+                                    <strong id="expJobTitle">Длъжност</strong>
+                                    <span id="expCompany">Компания</span>
+                                    <span id="expDates" style="display: block; font-size: 0.85rem; color: var(--muted); margin: 4px 0;">От дата - До дата</span>
+                                    <p id="expDescription">Описание на отговорностите и постиженията...</p>
+                                </li>
+                            </ul>
+                        </section>
+                        <section>
+                            <h4>Образование</h4>
+                            <ul id="educationList">
+                                <li>
+                                    <strong id="eduDegree">Специалност / Степен</strong>
+                                    <span id="eduSchool" style="display: block; font-size: 0.85rem; color: var(--muted); margin: 4px 0;">Университет / Училище</span>
+                                    <span id="eduDates" style="display: block; font-size: 0.85rem; color: var(--muted); margin: 4px 0;">От дата - До дата</span>
+                                    <p id="eduInfo">Допълнителна информация...</p>
+                                </li>
+                            </ul>
+                        </section>
+                        <section>
+                            <h4>Умения</h4>
+                            <div class="skill-tags" id="techSkillsTags">
+                                <span>Java</span><span>Spring Boot</span>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <h5 style="font-size: 0.9rem; color: var(--muted); margin-bottom: 8px;">Езици</h5>
+                                <div class="skill-tags" id="languagesTags">
+                                    <span>Български (роден)</span>
+                                </div>
+                            </div>
+                        </section>
+    <!--                    <section>-->
+    <!--                        <h4>Умения</h4>-->
+    <!--                        <div class="skill-tags">-->
+    <!--                            <span>Java</span><span>Spring Boot</span><span>Docker</span><span>Kubernetes</span>-->
+    <!--                            <span>MySQL</span><span>Leadership</span>-->
+    <!--                        </div>-->
+    <!--                    </section>-->
+                    </div>
+    <!--                <div style="text-align: center; padding: 48px 24px;">-->
+    <!--                    <p style="color: var(&#45;&#45;muted); margin-bottom: 32px; font-size: 1.1rem;">-->
+    <!--                        Твоето CV е готово! Натисни бутона по-долу, за да го изтеглиш като PDF.-->
+    <!--                    </p>-->
+    <!--                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
+    <!--                    <button type="submit" class="btn-primary" style="font-size: 1.1rem; padding: 16px 32px;">-->
+    <!--                        Изтегли PDF-->
+    <!--                    </button>-->
+    <!--                </div>-->
+    <!--                <footer class="preview-actions">-->
+    <!--                    <button class="btn-ghost">Изтегли PDF</button>-->
+    <!--                    <button class="btn-outline">Сподели линк</button>-->
+    <!--                    <button class="btn-primary">Готово CV</button>-->
+    <!--                </footer>-->
+                </div>
+            </section>
+        </main>
+
+        <script>
+            const nameInput = document.querySelector('input[placeholder="Иван Иванов"]');
+        const roleInput = document.querySelector('input[placeholder="Senior Java Developer"]');
+        const previewName = document.getElementById('previewName');
+        const previewTitle = document.getElementById('previewTitle');
+
+        if (nameInput && previewName) {
+            nameInput.addEventListener('input', () => previewName.textContent = nameInput.value || 'Иван Иванов');
+        }
+        if (roleInput && previewTitle) {
+            roleInput.addEventListener('input', () => previewTitle.textContent = roleInput.value || 'Senior Java Developer');
+        }
+
+        // Wizard navigation
+        const formSteps = document.querySelectorAll('.form-step');
+        const wizardSteps = document.querySelectorAll('.wizard-step');
+        let currentStep = 0;
+
+        function goToStep(step) {
+            // Hide current form step
+            if (formSteps[currentStep]) {
+                formSteps[currentStep].style.display = 'none';
+            }
+            if (wizardSteps[currentStep]) {
+                wizardSteps[currentStep].classList.remove('active');
+            }
+
+            // Show new step
+            currentStep = step;
+            if (formSteps[currentStep]) {
+                formSteps[currentStep].style.display = 'block';
+            }
+            if (wizardSteps[currentStep]) {
+                wizardSteps[currentStep].classList.add('active');
+            }
+        }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.cv-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                // Prevent default form submission - we handle it via JavaScript buttons
+                event.preventDefault();
+
+                if (currentStep < formSteps.length - 1) {
+                    // На междинните стъпки НЕ пращаме формата, само минаваме напред
+                    goToStep(currentStep + 1);
+                }
+                // Ако сме на последната стъпка, формата се изпраща чрез submitForm() функцията
+            });
+        });
+    });
+
+        function updatePreview() {
+        // Step 1: Basic info
+        const firstName = document.querySelector('.form-step[data-step="0"] input[placeholder="Иван Иванов"]')?.value || '';
+        const position = document.querySelector('.form-step[data-step="0"] input[placeholder="Senior Java Developer"]')?.value || '';
+        const email = document.querySelector('.form-step[data-step="0"] input[placeholder="ivan@example.com"]')?.value || '';
+        const phone = document.querySelector('.form-step[data-step="0"] input[placeholder="+359 88 123 4567"]')?.value || '';
+        const location = document.querySelector('.form-step[data-step="0"] input[placeholder="София, България"]')?.value || '';
+        const linkedin = document.querySelector('.form-step[data-step="0"] input[placeholder="https://linkedin.com/in/ivan"]')?.value || '';
+        const summary = document.querySelector('.form-step[data-step="0"] textarea')?.value || '';
+
+        // Update preview name and title
+        if (previewName) previewName.textContent = firstName || 'Иван Иванов';
+        if (previewTitle) previewTitle.textContent = position || 'Senior Java Developer';
+
+        // Update contact section
+        const contactSection = document.querySelector('.preview-body section:first-child');
+        if (contactSection) {
+            const contactText = [email, phone, location].filter(Boolean).join(' · ') || 'ivan@example.com · +359 88 123 4567 · София';
+            const contactP = contactSection.querySelector('p');
+            if (contactP) contactP.textContent = contactText;
+
+            const linkedinP = contactSection.querySelectorAll('p')[1];
+            if (linkedinP) {
+                if (linkedin) {
+                    linkedinP.textContent = linkedin.replace(/^https?:\/\//, '');
+                    linkedinP.style.display = 'block';
+                } else {
+                    linkedinP.style.display = 'none';
+                }
+            }
+        }
+
+        // Update summary section
+        const summarySection = document.querySelector('.preview-body section:nth-child(2)');
+        if (summarySection) {
+            const summaryP = summarySection.querySelector('p');
+            if (summaryP) summaryP.textContent = summary || 'Професионален бекенд инженер с 7+ години опит, фокусиран върху облачни платформи, микросървиси и решения с висока достъпност.';
+        }
+
+        // Step 2: Experience
+        const jobTitle = document.querySelector('.form-step[data-step="1"] input[placeholder="Senior Java Developer"]')?.value || '';
+        const company = document.querySelector('.form-step[data-step="1"] input[placeholder="TechWave"]')?.value || '';
+        const dateFromInput = document.querySelector('.form-step[data-step="1"] input[type="month"]');
+        const dateToInput = document.querySelectorAll('.form-step[data-step="1"] input[type="month"]')[1];
+        const dateFrom = dateFromInput?.value || '';
+        const dateTo = dateToInput?.value || '';
+        const jobDescription = document.querySelector('.form-step[data-step="1"] textarea')?.value || '';
+
+        const expJobTitleEl = document.getElementById('expJobTitle');
+        const expCompanyEl = document.getElementById('expCompany');
+        const expDatesEl = document.getElementById('expDates');
+        const expDescriptionEl = document.getElementById('expDescription');
+
+        if (expJobTitleEl) expJobTitleEl.textContent = jobTitle || 'Длъжност';
+        if (expCompanyEl) {
+            expCompanyEl.textContent = company || 'Компания';
+            expCompanyEl.style.display = company ? 'block' : 'none';
+        }
+        if (expDatesEl) {
+            let dateStr = 'От дата - До дата';
+            if (dateFrom || dateTo) {
+                const formatDate = (dateValue) => {
+                    if (!dateValue) return '';
+                    const [year, month] = dateValue.split('-');
+                    if (year && month) {
+                        const monthNames = ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни',
+                                          'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'];
+                        return `${monthNames[parseInt(month) - 1]} ${year}`;
+                    }
+                    return '';
+                };
+                const fromStr = formatDate(dateFrom);
+                const toStr = formatDate(dateTo);
+                dateStr = [fromStr, toStr].filter(Boolean).join(' - ') || 'От дата - До дата';
+            }
+            expDatesEl.textContent = dateStr;
+            expDatesEl.style.display = (dateFrom || dateTo) ? 'block' : 'none';
+        }
+        if (expDescriptionEl) expDescriptionEl.textContent = jobDescription || 'Описание на отговорностите и постиженията...';
+
+        // Step 3: Education
+        const degree = document.querySelector('.form-step[data-step="2"] input[placeholder="Компютърни науки"]')?.value || '';
+        const school = document.querySelector('.form-step[data-step="2"] input[placeholder="Софийски университет"]')?.value || '';
+        const eduDateFromInput = document.querySelector('.form-step[data-step="2"] input[type="month"]');
+        const eduDateToInput = document.querySelectorAll('.form-step[data-step="2"] input[type="month"]')[1];
+        const eduDateFrom = eduDateFromInput?.value || '';
+        const eduDateTo = eduDateToInput?.value || '';
+        const eduInfo = document.querySelector('.form-step[data-step="2"] textarea')?.value || '';
+
+        const eduDegreeEl = document.getElementById('eduDegree');
+        const eduSchoolEl = document.getElementById('eduSchool');
+        const eduDatesEl = document.getElementById('eduDates');
+        const eduInfoEl = document.getElementById('eduInfo');
+
+        if (eduDegreeEl) eduDegreeEl.textContent = degree || 'Специалност / Степен';
+        if (eduSchoolEl) {
+            eduSchoolEl.textContent = school || 'Университет / Училище';
+            eduSchoolEl.style.display = school ? 'block' : 'none';
+        }
+        if (eduDatesEl) {
+            let dateStr = 'От дата - До дата';
+            if (eduDateFrom || eduDateTo) {
+                const formatDate = (dateValue) => {
+                    if (!dateValue) return '';
+                    const [year, month] = dateValue.split('-');
+                    if (year && month) {
+                        const monthNames = ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни',
+                                          'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'];
+                        return `${monthNames[parseInt(month) - 1]} ${year}`;
+                    }
+                    return '';
+                };
+                const fromStr = formatDate(eduDateFrom);
+                const toStr = formatDate(eduDateTo);
+                dateStr = [fromStr, toStr].filter(Boolean).join(' - ') || 'От дата - До дата';
+            }
+            eduDatesEl.textContent = dateStr;
+            eduDatesEl.style.display = (eduDateFrom || eduDateTo) ? 'block' : 'none';
+        }
+        if (eduInfoEl) {
+            eduInfoEl.textContent = eduInfo || 'Допълнителна информация...';
+            eduInfoEl.style.display = eduInfo ? 'block' : 'none';
+        }
+
+        // Step 4: Skills
+        const techSkills = document.querySelector('.form-step[data-step="3"] input[placeholder="Java, Spring Boot, Docker, Kubernetes (раздели със запетая)"]')?.value || '';
+        const languages = document.querySelector('.form-step[data-step="3"] input[placeholder="Български (роден), Английски (C1)"]')?.value || '';
+
+        const techSkillsTags = document.getElementById('techSkillsTags');
+        const languagesTags = document.getElementById('languagesTags');
+
+        if (techSkillsTags) {
+            const skills = techSkills.split(',').map(s => s.trim()).filter(Boolean);
+            if (skills.length > 0) {
+                techSkillsTags.innerHTML = skills.map(skill => `<span>${skill}</span>`).join('');
+            } else {
+                techSkillsTags.innerHTML = '<span>Java</span><span>Spring Boot</span>';
+            }
+        }
+
+        if (languagesTags) {
+            const langs = languages.split(',').map(l => l.trim()).filter(Boolean);
+            if (langs.length > 0) {
+                languagesTags.innerHTML = langs.map(lang => `<span>${lang}</span>`).join('');
+            } else {
+                languagesTags.innerHTML = '<span>Български (роден)</span>';
+            }
+        }
+    }
+
+    // Add event listeners to all form inputs
+    document.addEventListener('DOMContentLoaded', function() {
+        // Listen to all inputs and textareas
+        document.querySelectorAll('.cv-form input, .cv-form textarea').forEach(input => {
+            input.addEventListener('input', updatePreview);
+            input.addEventListener('change', updatePreview);
+        });
+
+        // Initial update
+        updatePreview();
+    });
+    function showCreateForm() {
+        window.location.href = '/create-cv';
+    }
+
+    function editCv(cvId) {
+        window.location.href = '/edit-cv/' + cvId;
+    }
+
+    function downloadCv(cvId) {
+        console.log('Downloading CV:', cvId);
+        window.location.href = '/create-cv/' + cvId;
+    }
+
+    function submitForm(actionUrl) {
+        const form = document.querySelector('.cv-form');
+        if (form) {
+            // Ensure ID field is cleared if it's empty string to prevent duplicate creation
+            const idInput = form.querySelector('input[name="id"]');
+            if (idInput && (!idInput.value || idInput.value.trim() === '')) {
+                idInput.value = '';
+            }
+
+            // Set method based on action URL
+            let methodInput = form.querySelector('input[name="_method"]');
+            if (!methodInput) {
+                methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                form.appendChild(methodInput);
+            }
+
+            if (actionUrl.includes('/update-cv')) {
+                methodInput.value = 'PUT';
+            } else {
+                methodInput.value = 'POST';
+            }
+
+            form.action = actionUrl;
+            form.method = 'POST'; // HTML forms only support GET/POST, Spring handles _method
+            form.submit();
+        }
+    }
+
+    function populateForm(cvData) {
+        // Populate form fields with existing CV data
+        Object.keys(cvData).forEach(key => {
+            const field = document.querySelector(`[name="${key}"]`);
+            if (field) {
+                field.value = cvData[key] || '';
+            }
+        });
+
+        // Update preview
+        updatePreview();
+    }
+        </script>
+    </body>
+    </html>
