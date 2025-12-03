@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>CV</title>
+    <style>
+        body {
+            font-family: "DejaVu LGC Sans", sans-serif;
+            padding: 32px;
+        }
+    </style>
+</head>
+<body>
+
+<h1 th:text="${fullName}">Име Фамилия</h1>
+<p>
+    <strong>Дата на раждане:</strong>
+    <span th:text="${birthDate}">Дата на раждане</span>
+</p>
+<h2>Контакт</h2>
+<p>
+    <strong>Емайл:</strong>
+    <span th:text="${email}">ivan@example.com</span>
+</p>
+<p>
+    <strong>Телефон:</strong>
+    <span th:text="${phone}">0888 123 456</span>
+</p>
+<p>
+    <strong>Локация:</strong>
+    <span th:text="${location}">София</span>
+</p>
+<p>
+    <strong>Линк:</strong>
+    <span th:text="${profileUrl}">linkedin.com/in/ivan</span>
+</p>
+
+<!--<h2>Резюме</h2>-->
+<!--<p th:text="${summary}">Кратко резюме...</p>-->
+
+<h2>Опит</h2>
+<p>
+    <strong>Длъжност:</strong>
+    <span th:text="${experienceJobTitle}">Длъжност</span>
+</p>
+<p>
+    <strong>Компания:</strong>
+    <span th:text="${experienceCompany}">Компания</span>
+</p>
+<p>
+    <span th:text="${experienceFrom}">01/2020</span> -
+    <span th:text="${experienceTo}">12/2024</span>
+</p>
+<p th:text="${experienceDescription}">Описание...</p>
+
+<h2>Образование</h2>
+<p>
+    <strong>Степен:</strong>
+    <span th:text="${educationDegree}">Степен</span>
+</p>
+<p>
+    <strong>Университет:</strong>
+    <span th:text="${educationSchool}">Университет</span>
+</p>
+<p>
+    <span th:text="${educationFrom}">09/2015</span> –
+    <span th:text="${educationTo}">06/2019</span>
+</p>
+<p th:text="${educationInfo}">Информация...</p>
+
+<h2>Умения</h2>
+<p>
+    <strong>Технически умения:</strong>
+    <span th:text="${technicalSkills}">Технически умения</span>
+</p>
+<p>
+    <strong>Език:</strong>
+    <span th:text="${languages}">Език</span>
+</p>
+</body>
+</html>
