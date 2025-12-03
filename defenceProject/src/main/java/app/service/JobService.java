@@ -29,7 +29,7 @@ public class JobService {
         this.applicationService = applicationService;
     }
 
-    public void appliedOffer(UUID id, UserData userData) {
+ public void appliedOffer(UUID id, UserData userData, MultipartFile cvFile) {
 
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Job not found with id: " + id));
@@ -42,10 +42,20 @@ public class JobService {
 
         job.setAppliedUser(userData.getUserId());
 
-        Application application = applicationService.createApplication(job, creator);
+        Application application = new Application();
+        application.setJob(job);
+        application.setUser(user);
+        application.setSubmittedOn(LocalDate.from(LocalDateTime.now()));
 
-        user.getApplications().add(application);
-        creator.getApplications().add(application);
+        try {
+            application.setCvFile(cvFile.getBytes());
+            application.setCvFileName(cvFile.getOriginalFilename());
+            application.setCvContentType(cvFile.getContentType());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read CV file", e);
+        }
+
+        applicationRepository.save(application);
 
         userRepository.save(user);
         userRepository.save(creator);
@@ -60,7 +70,6 @@ public class JobService {
     }
 
     public void createJob(CreateJobRequest request, UserData userData) {
-        
         Job job = Job.builder()
                 .title(request.getTitle())
                 .team(request.getTeam())
@@ -78,9 +87,33 @@ public class JobService {
                 .publishDate(request.getPublishDate())
                 .deadline(request.getDeadline())
                 .creatorId(userData.getUserId())
+                .active(true)
                 .build();
 
+        job = jobRepository.save(job);
+        
+        try {
+            checkJobAlertsAndCreateMatches(job);
+        } catch (Exception e) {
+            log.error("Error checking job alerts for job: " + job.getId(), e);
+        }
+    }
+
+    public void softDeleteJob(UUID jobId) {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new IllegalArgumentException("Job not found with id: " + jobId));
+
+        job.setActive(false);
         jobRepository.save(job);
+
+        List<Application> applications = applicationRepository.findAll().stream()
+                .filter(app -> app.getJob() != null && app.getJob().getId().equals(jobId))
+                .toList();
+
+        for (Application application : applications) {
+            application.setStatus("job delete");
+            applicationRepository.save(application);
+        }
     }
 }
 

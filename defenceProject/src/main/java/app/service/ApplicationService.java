@@ -6,9 +6,13 @@ import app.model.Application;
 import app.model.User;
 import app.repository.ApplicationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -20,19 +24,7 @@ public class ApplicationService {
         this.applicationRepository = applicationRepository;
     }
 
-    public Application createApplication(Job job, User curUser) {
-
-        Application application = Application.builder()
-                .user(curUser)
-                .job(job)
-                .submittedOn(LocalDate.now())
-                .build();
-
-        applicationRepository.save(application);
-        return application;
-    }
-
-        public void updateStatusOnApplication(UUID id, String status) {
+    public void updateStatusOnApplication(UUID id, String status) {
 
         Optional<Application> application = applicationRepository.findById(id);
         User user = application.get().getUser();

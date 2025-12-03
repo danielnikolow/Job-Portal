@@ -24,6 +24,13 @@ public class Application {
     @JoinColumn(name = "job")
     private Job job;
 
+    @Lob
+    private byte[] cvFile;
+
+    private String CvFileName;
+
+    private String CvContentType;
+
     private String status;
 
     private LocalDate submittedOn;

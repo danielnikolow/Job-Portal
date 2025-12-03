@@ -1,0 +1,362 @@
+:root {
+    --bg-page: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-header: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --text-primary: #1a202c;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --transition: all 0.2s ease;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.detail-value {
+    color: var(--text-secondary);
+    font-weight: 700;
+}
+
+.user-applications-page {
+    min-height: 100vh;
+    background: var(--bg-page);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-primary);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Header */
+.user-apps-header {
+    background: var(--bg-header);
+    color: #ffffff;
+    padding: 48px 0 32px;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 32px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.header-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.page-label {
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 12px;
+    opacity: 0.9;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.user-apps-header h1 {
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 800;
+    margin: 0 0 12px;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 16px;
+    opacity: 0.95;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.header-stats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    text-align: center;
+    min-width: 120px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.stat-value.accent {
+    color: #facc15;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.9;
+    font-weight: 600;
+}
+
+/* Applications List */
+.applications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.application-item {
+    width: 100%;
+}
+
+.app-card {
+    background: var(--bg-card);
+    border: 2px solid #e0e0e0;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.app-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: #667eea;
+    transform: translateY(-2px);
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.app-job-info {
+    flex: 1;
+}
+
+.job-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--text-primary);
+}
+
+.job-company {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.app-status {
+    flex-shrink: 0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-pending,
+.status-new {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-in_review,
+.status-reviewing {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.status-interview {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.status-accepted,
+.status-offer {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.app-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.detail-label {
+    color: var(--text-muted);
+    font-weight: 600;
+    min-width: 100px;
+}
+
+.detail-value {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.app-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    font-family: inherit;
+}
+
+.btn-view {
+    background: #667eea;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-view:hover {
+    background: #5568d3;
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Empty State */
+.empty-state {
+    margin-top: 60px;
+}
+
+.empty-content {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border: 2px solid var(--border-color);
+}
+
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+.empty-content h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: var(--text-primary);
+}
+
+.empty-content p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin: 0 0 32px;
+    line-height: 1.6;
+}
+
+.empty-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+    }
+
+    .header-stats {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .stat-item {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .app-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .app-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+

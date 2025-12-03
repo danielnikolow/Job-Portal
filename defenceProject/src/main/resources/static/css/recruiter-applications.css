@@ -257,6 +257,31 @@
   padding-top: 12px;
 }
 
+.btn.ghost {
+  border: 2px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 700; /* или 800 за още по-дебел */
+  text-decoration: none; /* премахва чертата под текста */
+}
+
+.btn.ghost:hover {
+  text-decoration: none; /* гарантира, че при hover няма да се появи черта */
+}
+
+.btn.danger {
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+}
+
+.btn.danger:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
         .foot-actions {
           display: flex;
           gap: 10px;
@@ -270,6 +295,11 @@
 
         .status-form select {
           width: 180px;
+        }
+
+        .delete-job-form {
+          display: flex;
+          align-items: center;
         }
 
         .empty-state {

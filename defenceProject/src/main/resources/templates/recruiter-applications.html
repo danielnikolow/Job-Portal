@@ -126,10 +126,15 @@
                 </div>
             </div>
             <footer class="card-foot">
-                <div class="foot-actions">
-                    <button type="button" class="btn ghost">Виж CV</button>
-<!--                    <button type="button" class="btn ghost">Бележки</button>-->
-                </div>
+<!--                <div class="foot-actions">-->
+<!--                    <button type="button" class="btn ghost">Виж CV</button>-->
+<!--&lt;!&ndash;                    <button type="button" class="btn ghost">Бележки</button>&ndash;&gt;-->
+<!--                </div>-->
+                <a th:href="@{'/applications/' + ${app.id} + '/cv'}"
+                   class="btn ghost"
+                   target="_blank">
+                    Виж Cv
+                </a>
                 <form class="status-form" th:action="@{'/recruiter-applications/' + ${app.id}}" method="post">
                     <input type="hidden" name="_method" value="PUT">
                     <select name="status">
@@ -140,6 +145,11 @@
                         <option value="Отказана">Отказана</option>
                     </select>
                     <button type="submit" class="btn primary">Запази</button>
+                </form>
+                <form class="delete-job-form" th:action="@{'/recruiter-applications/job/' + ${app.job.id} + '/delete'}" method="post" 
+                      onsubmit="return confirm('Сигурни ли сте, че искате да изтриете тази работа? Това ще изтрие работата от всички обяви и ще обнови статуса на кандидатурите на \"job delete\".');">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn danger">Изтрии работа</button>
                 </form>
             </footer>
         </article>
