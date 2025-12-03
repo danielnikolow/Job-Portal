@@ -1,13 +1,19 @@
 package app.web;
-import app.service.CvService;
-import app.web.dto.CvRequest;
-import app.web.dto.CvResponse;
-import app.web.mapper.DtoMapper;
+
+import app.cv.client.dto.CvRequest;
+import app.cv.service.CvService;
+import app.repository.UserRepository;
+import app.security.UserData;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +23,7 @@ public class CvController {
 
     private final CvService cvService;
 
-    public CvController(CvService cvService) {
+    public UserCreateCvController(CvService cvService) {
         this.cvService = cvService;
     }
 
@@ -31,7 +37,7 @@ public class CvController {
                 .body(cvs);
     }
 
-        @PostMapping("/cv-save")
+    @PostMapping("/cv-save")
     public ResponseEntity<Void> saveCv(@RequestBody CvRequest cvRequest) {
 
         cvService.saveSv(cvRequest);
@@ -39,6 +45,51 @@ public class CvController {
         return ResponseEntity
                 .ok()
                 .body(null);
+    }
+
+    @GetMapping("/edit-cv/{cvId}")
+    public ModelAndView editCv(@PathVariable UUID cvId, @AuthenticationPrincipal UserData userData) {
+
+        List<CvRequest> cvs = cvService.getCvsByUserId(userData.getUserId());
+
+        CvRequest cvRequest = cvs.stream()
+                .filter(c -> c.getId().equals(cvId))
+                .findFirst()
+                .orElse(null);
+
+        if (cvRequest == null) {
+            return new ModelAndView("redirect:/create-cv");
+        }
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("create-cv");
+        modelAndView.addObject("cvRequest", cvRequest);
+        modelAndView.addObject("userCvs", cvs);
+        modelAndView.addObject("user", userData);
+        return modelAndView;
+    }
+
+    @PutMapping("/create-cv/update-cv")
+    public String updateCv(@AuthenticationPrincipal UserData userData,
+                         @Valid @ModelAttribute("cvRequest") CvRequest cvRequest,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.cvRequest", bindingResult);
+            redirectAttributes.addFlashAttribute("cvRequest", cvRequest);
+            return "redirect:/create-cv";
+        }
+
+        if (cvRequest.getId() != null) {
+            cvService.updateCv(cvRequest, userData.getUserId());
+            redirectAttributes.addFlashAttribute("successMessage", "CV е обновено успешно!");
+        } else {
+            cvService.saveCv(cvRequest, userData.getUserId());
+            redirectAttributes.addFlashAttribute("successMessage", "CV е създадено успешно!");
+        }
+
+        return "redirect:/create-cv";
     }
 
 }
