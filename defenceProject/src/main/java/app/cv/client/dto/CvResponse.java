@@ -1,7 +1,6 @@
 package app.cv.client.dto;
 import lombok.Builder;
 import lombok.Data;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
