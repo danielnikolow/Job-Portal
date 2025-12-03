@@ -50,4 +50,16 @@ public class CvController {
                 .ok()
                 .body(null);
     }
+
+    @PostMapping("/cv-export")
+    public ResponseEntity<byte[]> exportCv(@RequestBody CvRequest cvRequest) {
+
+        byte[] pdfBytes = cvService.generateCvPdf(cvRequest);
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cv.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdfBytes);
+    }
 }
