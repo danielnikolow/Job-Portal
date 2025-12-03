@@ -31,10 +31,20 @@ public class CvController {
                 .body(cvs);
     }
 
-        @PostMapping("/cv-save")
+    @PostMapping("/cv-save")
     public ResponseEntity<Void> saveCv(@RequestBody CvRequest cvRequest) {
 
         cvService.saveSv(cvRequest);
+
+        return ResponseEntity
+                .ok()
+                .body(null);
+    }
+
+    @PutMapping("/cv-update")
+    public ResponseEntity<Void> cvUpdate(@RequestBody CvRequest cvRequest) {
+
+        cvService.cvUpdate(cvRequest);
 
         return ResponseEntity
                 .ok()
