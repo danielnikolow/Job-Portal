@@ -15,6 +15,30 @@ import java.util.UUID;
 @RequestMapping("/api/v1")
 public class CvController {
 
+    private final CvService cvService;
 
+    public CvController(CvService cvService) {
+        this.cvService = cvService;
+    }
+
+    @GetMapping("/get-cvs")
+    public ResponseEntity<List<CvResponse>> getCvsByUserId(@RequestParam(name = "userId") UUID userId) {
+
+        List<CvResponse> cvs = cvService.getCvsByUserId(userId).stream().map(DtoMapper::fromCv).toList();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cvs);
+    }
+
+        @PostMapping("/cv-save")
+    public ResponseEntity<Void> saveCv(@RequestBody CvRequest cvRequest) {
+
+        cvService.saveSv(cvRequest);
+
+        return ResponseEntity
+                .ok()
+                .body(null);
+    }
 
 }
