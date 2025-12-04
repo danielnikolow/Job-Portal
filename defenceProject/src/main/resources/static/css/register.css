@@ -734,14 +734,15 @@
     margin-right: 2px;
 }
 
-.form-group-advanced .form-input-advanced:invalid,
+.form-group-advanced .form-input-advanced:invalid:not(:placeholder-shown),
 .form-group-advanced .form-input-advanced.error {
     border-color: #ef4444;
 }
 
-.form-group-advanced .form-input-advanced:invalid:focus,
+.form-group-advanced .form-input-advanced:invalid:not(:placeholder-shown):focus,
 .form-group-advanced .form-input-advanced.error:focus {
     border-color: #ef4444;
     box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
 }
+
 

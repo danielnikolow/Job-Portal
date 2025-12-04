@@ -133,76 +133,76 @@
     </div>
 </section>
 
-<!-- Categories Section -->
-<section class="categories">
-    <div class="container">
-        <div class="section-header-modern">
-            <div class="section-header-text">
-                <span class="section-badge">Категории</span>
-                <h2 class="section-title">Търси по категории</h2>
-                <p class="section-description">Избери от нашите популярни категории и открий идеалната позиция за теб</p>
-            </div>
-            <a th:href="@{/jobs}" class="view-all-btn">Виж всички категории →</a>
-        </div>
-        <div class="categories-grid">
-            <a th:href="@{/jobs?category=business}" class="category-card">
-                <div class="category-icon-wrapper">
-                    <div class="category-icon">💼</div>
-                    <div class="category-bg"></div>
-                </div>
-                <h3>Бизнес & Управление</h3>
-                <p class="category-count">1,234 обяви</p>
-                <span class="category-link">Виж обяви →</span>
-            </a>
-            <a th:href="@{/jobs?category=it}" class="category-card featured">
-                <div class="category-badge-featured">Най-популярна</div>
-                <div class="category-icon-wrapper">
-                    <div class="category-icon">💻</div>
-                    <div class="category-bg"></div>
-                </div>
-                <h3>IT & Технологии</h3>
-                <p class="category-count">2,456 обяви</p>
-                <span class="category-link">Виж обяви →</span>
-            </a>
-            <a th:href="@{/jobs?category=healthcare}" class="category-card">
-                <div class="category-icon-wrapper">
-                    <div class="category-icon">🏥</div>
-                    <div class="category-bg"></div>
-                </div>
-                <h3>Здравеопазване</h3>
-                <p class="category-count">856 обяви</p>
-                <span class="category-link">Виж обяви →</span>
-            </a>
-            <a th:href="@{/jobs?category=education}" class="category-card">
-                <div class="category-icon-wrapper">
-                    <div class="category-icon">🎓</div>
-                    <div class="category-bg"></div>
-                </div>
-                <h3>Образование</h3>
-                <p class="category-count">678 обяви</p>
-                <span class="category-link">Виж обяви →</span>
-            </a>
-            <a th:href="@{/jobs?category=construction}" class="category-card">
-                <div class="category-icon-wrapper">
-                    <div class="category-icon">🏗️</div>
-                    <div class="category-bg"></div>
-                </div>
-                <h3>Строителство</h3>
-                <p class="category-count">423 обяви</p>
-                <span class="category-link">Виж обяви →</span>
-            </a>
-            <a th:href="@{/jobs?category=design}" class="category-card">
-                <div class="category-icon-wrapper">
-                    <div class="category-icon">🎨</div>
-                    <div class="category-bg"></div>
-                </div>
-                <h3>Дизайн & Креатив</h3>
-                <p class="category-count">789 обяви</p>
-                <span class="category-link">Виж обяви →</span>
-            </a>
-        </div>
-    </div>
-</section>
+<!--&lt;!&ndash; Categories Section &ndash;&gt;-->
+<!--<section class="categories">-->
+<!--    <div class="container">-->
+<!--        <div class="section-header-modern">-->
+<!--            <div class="section-header-text">-->
+<!--                <span class="section-badge">Категории</span>-->
+<!--                <h2 class="section-title">Търси по категории</h2>-->
+<!--                <p class="section-description">Избери от нашите популярни категории и открий идеалната позиция за теб</p>-->
+<!--            </div>-->
+<!--            <a th:href="@{/jobs}" class="view-all-btn">Виж всички категории →</a>-->
+<!--        </div>-->
+<!--        <div class="categories-grid">-->
+<!--            <a th:href="@{/jobs?category=business}" class="category-card">-->
+<!--                <div class="category-icon-wrapper">-->
+<!--                    <div class="category-icon">💼</div>-->
+<!--                    <div class="category-bg"></div>-->
+<!--                </div>-->
+<!--                <h3>Бизнес & Управление</h3>-->
+<!--                <p class="category-count">1,234 обяви</p>-->
+<!--                <span class="category-link">Виж обяви →</span>-->
+<!--            </a>-->
+<!--            <a th:href="@{/jobs?category=it}" class="category-card featured">-->
+<!--                <div class="category-badge-featured">Най-популярна</div>-->
+<!--                <div class="category-icon-wrapper">-->
+<!--                    <div class="category-icon">💻</div>-->
+<!--                    <div class="category-bg"></div>-->
+<!--                </div>-->
+<!--                <h3>IT & Технологии</h3>-->
+<!--                <p class="category-count">2,456 обяви</p>-->
+<!--                <span class="category-link">Виж обяви →</span>-->
+<!--            </a>-->
+<!--            <a th:href="@{/jobs?category=healthcare}" class="category-card">-->
+<!--                <div class="category-icon-wrapper">-->
+<!--                    <div class="category-icon">🏥</div>-->
+<!--                    <div class="category-bg"></div>-->
+<!--                </div>-->
+<!--                <h3>Здравеопазване</h3>-->
+<!--                <p class="category-count">856 обяви</p>-->
+<!--                <span class="category-link">Виж обяви →</span>-->
+<!--            </a>-->
+<!--            <a th:href="@{/jobs?category=education}" class="category-card">-->
+<!--                <div class="category-icon-wrapper">-->
+<!--                    <div class="category-icon">🎓</div>-->
+<!--                    <div class="category-bg"></div>-->
+<!--                </div>-->
+<!--                <h3>Образование</h3>-->
+<!--                <p class="category-count">678 обяви</p>-->
+<!--                <span class="category-link">Виж обяви →</span>-->
+<!--            </a>-->
+<!--            <a th:href="@{/jobs?category=construction}" class="category-card">-->
+<!--                <div class="category-icon-wrapper">-->
+<!--                    <div class="category-icon">🏗️</div>-->
+<!--                    <div class="category-bg"></div>-->
+<!--                </div>-->
+<!--                <h3>Строителство</h3>-->
+<!--                <p class="category-count">423 обяви</p>-->
+<!--                <span class="category-link">Виж обяви →</span>-->
+<!--            </a>-->
+<!--            <a th:href="@{/jobs?category=design}" class="category-card">-->
+<!--                <div class="category-icon-wrapper">-->
+<!--                    <div class="category-icon">🎨</div>-->
+<!--                    <div class="category-bg"></div>-->
+<!--                </div>-->
+<!--                <h3>Дизайн & Креатив</h3>-->
+<!--                <p class="category-count">789 обяви</p>-->
+<!--                <span class="category-link">Виж обяви →</span>-->
+<!--            </a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
 
 <!-- How It Works Section -->
 <section class="how-it-works">
