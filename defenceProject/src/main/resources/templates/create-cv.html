@@ -83,7 +83,8 @@
     <!--                                <p th:text="${cv.birthDate}">Позиция</p>-->
                                 </div>
                                 <div class="cv-meta">
-                                    <span class="cv-date" th:text="'Създадено: ' + ${#temporals.format(cv.createdAt, 'dd.MM.yyyy')}">Дата</span>
+                                    <span class="cv-date" th:text="'Създадено: ' + ${cv.birthDate}">
+                                        Дата</span>
                                 </div>
                             </div>
                             <div class="cv-actions">

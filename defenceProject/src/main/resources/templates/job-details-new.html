@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${job != null ? job.title + ' | JobPortal' : 'Детайли за обява | JobPortal'}">Детайли за обява</title>
+    <link rel="stylesheet" th:href="@{/css/job-details-new.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="job-details-page">
+
+<!-- Hero Header -->
+<header class="job-hero-header">
+    <div class="hero-container">
+        <div class="hero-breadcrumb">
+            <a th:href="@{/user-home}">Начало</a>
+            <span class="separator">/</span>
+            <a th:href="@{/user-home}">Обяви</a>
+            <span class="separator">/</span>
+            <span class="current" th:text="${job != null ? job.title : 'Детайли'}">Детайли</span>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-main">
+                <div class="hero-badge" th:if="${job != null && job.postedOn != null}">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span th:text="'Публикувана на ' + ${#temporals.format(job.postedOn, 'dd MMM yyyy')}">Публикувана на 15 дек 2025</span>
+                </div>
+
+                <h1 class="hero-title" th:text="${job != null ? job.title : 'Заглавие на позицията'}">Senior Java Developer</h1>
+
+                <div class="hero-meta-row">
+                    <div class="meta-badge" th:if="${job != null && job.company != null}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span th:text="${job.company}">TechWave</span>
+                    </div>
+                    <div class="meta-badge" th:if="${job != null && job.location != null}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span th:text="${job.location}">София</span>
+                    </div>
+                    <div class="meta-badge" th:if="${job != null && job.employmentType != null}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                        <span th:text="${job.employmentType}">Пълен ден</span>
+                    </div>
+                    <div class="meta-badge" th:if="${job != null && job.workModel != null}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        <span th:text="${job.workModel}">Хибридно</span>
+                    </div>
+                </div>
+
+                <div class="hero-summary" th:if="${job != null && job.summary != null}">
+                    <p th:text="${job.summary}">Кратко описание на позицията, което дава обща представа за ролята и отговорностите.</p>
+                </div>
+
+                <div class="hero-salary" th:if="${job != null && (job.salaryMin != null || job.salaryMax != null)}">
+                    <div class="salary-label">Заплата</div>
+                    <div class="salary-amount">
+                        <span th:if="${job.salaryMin != null}" th:text="${job.salaryMin}">5000</span>
+                        <span th:if="${job.salaryMin != null && job.salaryMax != null}"> - </span>
+                        <span th:if="${job.salaryMax != null}" th:text="${job.salaryMax}">7000</span>
+                        <span th:if="${job.currency != null}" th:text="${job.currency == 'BGN' ? ' лв.' : (job.currency == 'EUR' ? ' €' : ' $')}"> лв.</span>
+                        <span th:if="${job.payCycle != null}" class="pay-cycle" th:text="' / ' + ${job.payCycle == 'MONTHLY' ? 'месец' : (job.payCycle == 'WEEKLY' ? 'седмица' : 'година')}"> / месец</span>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="hero-sidebar">
+                <div class="sidebar-card apply-card">
+                    <div class="card-header">
+                        <div class="company-logo">
+                            <span th:text="${job != null && job.company != null ? job.company.substring(0,1).toUpperCase() : 'C'}">T</span>
+                        </div>
+                        <div class="company-info">
+                            <h3 th:text="${job != null ? job.company : 'Компания'}">TechWave</h3>
+                            <span class="company-location" th:text="${job != null && job.location != null ? job.location : 'Локация'}">София</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details">
+                        <div class="detail-row" th:if="${job != null && job.team != null}">
+                            <span class="detail-label">Екип</span>
+                            <span class="detail-value" th:text="${job.team}">Backend Team</span>
+                        </div>
+                        <div class="detail-row" th:if="${job != null && job.publishDate != null}">
+                            <span class="detail-label">Публикувана</span>
+                            <span class="detail-value" th:text="${#temporals.format(job.publishDate, 'dd MMM yyyy')}">15 дек 2025</span>
+                        </div>
+                        <div class="detail-row" th:if="${job != null && job.deadline != null}">
+                            <span class="detail-label">Краен срок</span>
+                            <span class="detail-value" th:text="${#temporals.format(job.deadline, 'dd MMM yyyy')}">30 дек 2025</span>
+                        </div>
+                        <div class="detail-row" th:if="${job != null}">
+                            <span class="detail-label">Статус</span>
+                            <span class="detail-value status-badge" th:classappend="${job.active ? 'active' : 'inactive'}" th:text="${job.active ? 'Активна' : 'Неактивна'}">Активна</span>
+                        </div>
+                    </div>
+
+<!--                    <div class="card-actions">-->
+<!--                        <form th:action="@{'/jobs/' + ${job.id}}" method="post" class="apply-form" th:if="${job != null}">-->
+<!--                            <input type="hidden" name="_method" value="PATCH"/>-->
+<!--                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+<!--                            <button type="submit" class="btn btn-apply" th:classappend="${job.appliedUser != null ? 'applied' : ''}">-->
+<!--                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">-->
+<!--                                    <path d="M20 6L9 17l-5-5"></path>-->
+<!--                                </svg>-->
+<!--                                <span th:text="${job.appliedUser != null ? 'Кандидатствано' : 'Кандидатствай сега'}">Кандидатствай сега</span>-->
+<!--                            </button>-->
+<!--                        </form>-->
+<!--                        <button type="button" class="btn btn-save" id="saveJobBtn">-->
+<!--                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">-->
+<!--                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>-->
+<!--                            </svg>-->
+<!--                            <span>Запази</span>-->
+<!--                        </button>-->
+<!--                    </div>-->
+                    <div class="card-actions">
+                        <form class="cv-upload-form"
+                              th:action="@{'/appliedJob/' + ${job.id}}"
+                              method="post"
+                              enctype="multipart/form-data"
+                              th:if="${job != null}">
+                            <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}">
+                            <input type="hidden" name="_method" value="put">
+                            <div class="file-upload-wrapper">
+                                <input type="file"
+                                       id="cvFile"
+                                       name="cvFile"
+                                       accept="application/pdf"
+                                       required
+                                       class="file-input">
+                                <label for="cvFile" class="file-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <path d="M14 2v6h6"></path>
+                                        <path d="M16 13H8"></path>
+                                        <path d="M16 17H8"></path>
+                                        <path d="M10 9H8"></path>
+                                    </svg>
+                                    <span class="file-text">Избери PDF файл</span>
+                                </label>
+                                <span class="file-name" id="fileName"></span>
+                                <button type="submit" class="btn-upload">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="17 8 12 3 7 8"></polyline>
+                                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                                    </svg>
+                                    Кандидатствай
+                                </button>
+                            </div>
+                        </form>
+<!--                        <button type="button" class="btn btn-save" id="saveJobBtn">-->
+<!--                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">-->
+<!--                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>-->
+<!--                            </svg>-->
+<!--                            <span>Запази</span>-->
+<!--                        </button>-->
+                    </div>
+                </div>
+
+<!--                <div class="sidebar-card share-card">-->
+<!--                    <h4>Сподели обявата</h4>-->
+<!--                    <div class="share-buttons">-->
+<!--                        <button type="button" class="share-btn" data-platform="linkedin" title="LinkedIn">-->
+<!--                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">-->
+<!--                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>-->
+<!--                            </svg>-->
+<!--                        </button>-->
+<!--                        <button type="button" class="share-btn" data-platform="twitter" title="Twitter">-->
+<!--                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">-->
+<!--                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>-->
+<!--                            </svg>-->
+<!--                        </button>-->
+<!--                        <button type="button" class="share-btn" data-platform="facebook" title="Facebook">-->
+<!--                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">-->
+<!--                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>-->
+<!--                            </svg>-->
+<!--                        </button>-->
+<!--                        <button type="button" class="share-btn" data-platform="copy" title="Копирай линк">-->
+<!--                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">-->
+<!--                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>-->
+<!--                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>-->
+<!--                            </svg>-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </aside>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="job-main-content">
+    <div class="content-container">
+        <div class="content-layout">
+            <!-- Main Content -->
+            <article class="job-content-main">
+                <!-- Description Section -->
+                <section class="content-section" th:if="${job != null && job.description != null}">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                        </div>
+                        <h2>За позицията</h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="rich-text" th:text="${job.description}">
+                            <p>Детайлно описание на позицията...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Requirements Section -->
+<!--                <section class="content-section" th:if="${job != null && job.requirements != null}">-->
+<!--                    <div class="section-header">-->
+<!--                        <div class="section-icon">-->
+<!--                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">-->
+<!--                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>-->
+<!--                                <polyline points="22 4 12 14.01 9 11.01"></polyline>-->
+<!--                            </svg>-->
+<!--                        </div>-->
+<!--                        <h2>Изисквания и умения</h2>-->
+<!--                    </div>-->
+<!--                    <div class="section-body">-->
+<!--                        <div class="requirements-list">-->
+<!--                            <div class="requirement-item" th:each="req : ${#strings.arraySplit(job.requirements, ',')}">-->
+<!--                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">-->
+<!--                                    <polyline points="20 6 9 17 4 12"></polyline>-->
+<!--                                </svg>-->
+<!--                                <span th:text="${#strings.trim(req)}">Изискване</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </section>-->
+            </article>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Save job functionality
+    const saveBtn = document.getElementById('saveJobBtn');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
+            this.classList.toggle('saved');
+            const isSaved = this.classList.contains('saved');
+            this.querySelector('span').textContent = isSaved ? 'Запазено' : 'Запази';
+        });
+    }
+
+    // Share functionality
+    const shareButtons = document.querySelectorAll('.share-btn');
+    shareButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const platform = this.dataset.platform;
+            const url = window.location.href;
+            const title = document.querySelector('.hero-title')?.textContent || '';
+
+            if (platform === 'copy') {
+                navigator.clipboard.writeText(url).then(() => {
+                    const svg = this.querySelector('svg');
+                    const originalColor = svg.style.color;
+                    svg.style.color = '#10b981';
+                    setTimeout(() => {
+                        svg.style.color = originalColor;
+                    }, 2000);
+                });
+            } else if (platform === 'linkedin') {
+                window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url), '_blank');
+            } else if (platform === 'twitter') {
+                window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(title), '_blank');
+            } else if (platform === 'facebook') {
+                window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank');
+            }
+        });
+    });
+    // CV File upload functionality
+const cvFileInput = document.getElementById('cvFile');
+const fileNameSpan = document.getElementById('fileName');
+const btnUpload = document.querySelector('.btn-upload');
+
+if (cvFileInput && fileNameSpan && btnUpload) {
+    cvFileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            fileNameSpan.textContent = e.target.files[0].name;
+            btnUpload.disabled = false;
+        } else {
+            fileNameSpan.textContent = '';
+            btnUpload.disabled = true;
+        }
+    });
+
+    // Initially disable upload button
+    btnUpload.disabled = true;
+}
+</script>
+</body>
+</html>

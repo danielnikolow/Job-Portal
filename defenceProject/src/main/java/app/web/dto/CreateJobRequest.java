@@ -50,16 +50,16 @@ public class CreateJobRequest {
     private String summary;
 
     @NotBlank(message = "Описанието е задължително")
-    @Size(max = 5000, message = "Описанието не може да бъде по-дълго от 5000 символа")
+    @Size(max = 100000, message = "Описанието не може да бъде по-дълго от 5000 символа")
     private String description;
 
     @Size(max = 2000, message = "Изискванията не могат да бъдат по-дълги от 2000 символа")
     private String requirements;
 
-    @NotNull(message = "Датата на публикуване е задължителна")
+//    @NotNull(message = "Датата на публикуване е задължителна")
     private LocalDate publishDate;
 
-    @NotNull(message = "Крайният срок е задължителен")
+//    @NotNull(message = "Крайният срок е задължителен")
     private LocalDate deadline;
 
 }

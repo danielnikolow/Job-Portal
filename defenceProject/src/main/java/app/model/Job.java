@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "jobs")
 public class Job {
 
-     @Id
+    @Id
     @GeneratedValue
     private UUID id;
 

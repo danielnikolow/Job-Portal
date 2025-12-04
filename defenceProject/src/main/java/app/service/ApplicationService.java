@@ -41,7 +41,7 @@ public class ApplicationService {
         applicationRepository.save(application2);
     }
 
-        public void softDeleteApplication(UUID appId) {
+    public void softDeleteApplication(UUID appId) {
         Application application = applicationRepository.findById(appId)
                 .orElseThrow(() -> new IllegalArgumentException("Job not found with id: " + appId));
 

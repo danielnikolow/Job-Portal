@@ -1,4 +1,4 @@
-package main.model;
+package app.model;
 
 public enum UserRole {
     RECRUITER("Recruiter"),

@@ -1,0 +1,341 @@
+ :root {
+          --bg-page: #f4f6ff;
+          --bg-card: #ffffff;
+          --bg-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          --text-primary: #1a202c;
+          --text-secondary: #4a5568;
+          --text-muted: #718096;
+          --border-color: #e2e8f0;
+          --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+          --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+          --shadow-lg: 0 20px 35px rgba(15, 23, 42, 0.18);
+          --radius: 18px;
+          --radius-sm: 12px;
+          --transition: 0.25s ease;
+        }
+
+        * { box-sizing: border-box; }
+        body, html { margin: 0; }
+
+        .apps-page {
+          min-height: 100vh;
+          background: var(--bg-page);
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          color: var(--text-primary);
+        }
+
+        .container {
+          width: min(1200px, 100%);
+          margin: 0 auto;
+          padding: 0 24px;
+        }
+
+        .apps-header {
+          background: var(--bg-hero);
+          padding: 48px 0 32px;
+          color: #fff;
+          box-shadow: var(--shadow-lg);
+        }
+
+        .flex-between {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 30px;
+          flex-wrap: wrap;
+        }
+
+        .page-label {
+          text-transform: uppercase;
+          letter-spacing: 0.28em;
+          font-size: 12px;
+          opacity: 0.8;
+          margin-bottom: 12px;
+        }
+
+        .apps-header h1 {
+          margin: 0;
+          font-size: clamp(32px, 4vw, 42px);
+          font-weight: 800;
+        }
+
+        .apps-header .subtitle {
+          margin-top: 10px;
+          color: rgba(255, 255, 255, 0.9);
+          max-width: 420px;
+          line-height: 1.6;
+        }
+
+        .stats {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+          gap: 15px;
+          width: 100%;
+        }
+
+        .stat {
+          background: rgba(255,255,255,0.16);
+          border: 1px solid rgba(255,255,255,0.25);
+          border-radius: var(--radius);
+          padding: 20px;
+          text-align: center;
+          backdrop-filter: blur(8px);
+        }
+
+        .stat .value {
+          display: block;
+          font-size: 34px;
+          font-weight: 800;
+        }
+
+        .stat .value.accent { color: #facc15; }
+
+        .stat .label {
+          text-transform: uppercase;
+          font-size: 12px;
+          letter-spacing: 0.18em;
+          opacity: 0.9;
+        }
+
+        .apps-main {
+          margin-top: -24px; /* малко по-меко припокриване */
+          padding-bottom: 60px;
+        }
+
+        .filters-card {
+          background: var(--bg-card);
+          border-radius: var(--radius);
+          padding: 28px;
+          box-shadow: var(--shadow-lg);
+          border: 1px solid rgba(15, 23, 42, 0.04);
+        }
+
+        .filters-grid {
+          display: grid;
+          gap: 20px 24px;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          align-items: end;
+          padding-bottom: 24px; /* вместо грешното 330px и ; */
+        }
+
+        .filter-field span {
+          font-weight: 600;
+          margin-bottom: 8px;
+          display: block;
+        }
+
+        input[type="text"],
+        select {
+          width: 100%;
+          padding: 12px 14px;
+          border-radius: var(--radius-sm);
+          border: 2px solid var(--border-color);
+          font-size: 15px;
+          transition: var(--transition);
+          background: #fff;
+        }
+
+        input:focus,
+        select:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 4px rgba(102,126,234,0.2);
+        }
+
+        .filter-actions {
+          display: flex;
+          gap: 12px;
+        }
+
+        .btn {
+          border: none;
+          border-radius: var(--radius-sm);
+          padding: 12px 18px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: var(--transition);
+        }
+
+        .btn.primary {
+          background: linear-gradient(135deg, #2563eb, #7c3aed);
+          color: #fff;
+          box-shadow: 0 16px 28px rgba(37, 99, 235, 0.35);
+        }
+
+        .btn.primary:hover { transform: translateY(-2px); }
+
+.btn.ghost {
+  border: 2px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+        .apps-grid {
+          margin-top: 52px;
+          display: grid;
+          gap: 24px;
+        }
+
+        .application-card {
+          background: #f5f5f5;
+          border-radius: var(--radius);
+          padding: 28px;
+          box-shadow: var(--shadow-md);
+          border: 3px solid #e0e0e0;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          transition: var(--transition);
+        }
+
+        .application-card:hover {
+          border-color: var(--border-color);
+          transform: translateY(-3px);
+        }
+
+        .card-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 20px;
+        }
+
+        .card-head h3 {
+          margin: 0;
+          font-size: 20px;
+        }
+
+        .card-head .muted {
+          color: var(--text-muted);
+          margin-top: 4px;
+        }
+
+        .status {
+          padding: 6px 12px;
+          border-radius: 999px;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          background: #e0f2fe;
+          color: #0369a1;
+        }
+.card-body .info-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+        .card-body .label {
+          color: var(--text-muted);
+          font-weight: 600;
+        }
+
+        .card-body .value { font-weight: 700; }
+
+        .tags {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          margin-top: 12px;
+        }
+
+        .tag {
+          background: #edf2ff;
+          color: #4338ca;
+          border-radius: 999px;
+          padding: 6px 12px;
+          font-size: 12px;
+          font-weight: 700;
+        }
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+}
+
+.btn.ghost {
+  border: 2px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 700; /* или 800 за още по-дебел */
+  text-decoration: none; /* премахва чертата под текста */
+}
+
+.btn.ghost:hover {
+  text-decoration: none; /* гарантира, че при hover няма да се появи черта */
+}
+
+.btn.danger {
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+}
+
+.btn.danger:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+        .foot-actions {
+          display: flex;
+          gap: 10px;
+        }
+
+        .status-form {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+
+        .status-form select {
+          width: 180px;
+        }
+
+        .delete-job-form {
+          display: flex;
+          align-items: center;
+        }
+
+        .empty-state {
+          margin-top: 32px;
+        }
+
+        .empty-card {
+          background: var(--bg-card);
+          border-radius: var(--radius);
+          padding: 40px;
+          text-align: center;
+          box-shadow: var(--shadow-lg);
+        }
+
+        .empty-actions {
+          margin-top: 24px;
+          display: flex;
+          gap: 12px;
+          justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+          .flex-between,
+          .card-head,
+          .card-foot,
+          .status-form,
+          .filter-actions {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .filters-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .status-form select {
+            width: 100%;
+          }
+        }

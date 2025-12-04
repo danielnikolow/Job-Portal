@@ -1,23 +1,18 @@
-package main.web;
+package app.web;
 
-import jakarta.servlet.http.HttpSession;
-import main.model.EmploymentType;
-import main.model.Job;
-import main.repository.JobRepository;
-import main.security.UserData;
-import main.service.JobService;
+import app.model.EmploymentType;
+import app.model.Job;
+import app.repository.JobRepository;
+import app.security.UserData;
+import app.service.JobService;
+import app.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.*;
 
 
 @Controller
@@ -25,17 +20,23 @@ public class HomeController {
 
     private final JobRepository jobRepository;
     private final JobService jobService;
+    private final UserService userService;
 
-    public HomeController(JobRepository jobRepository1, JobService jobService) {
-        this.jobRepository = jobRepository1;
+    public HomeController(JobRepository jobRepository, JobService jobService, UserService userService) {
+        this.jobRepository = jobRepository;
         this.jobService = jobService;
+        this.userService = userService;
     }
 
     @GetMapping("/user-home")
-    public ModelAndView userHome(@AuthenticationPrincipal UserData userData) {
+    public ModelAndView userHome(@AuthenticationPrincipal UserData userData, HttpServletResponse response) {
 
-        List<Job> latestJobs = jobRepository.findAll();
-        ModelAndView modelAndView = buildUserHomeView(userData, latestJobs);
+        List<Job> allJobs = jobRepository.findAll();
+        List<Job> latestJobs = allJobs.stream()
+                .filter(job -> job.isActive())
+                .toList();
+
+        ModelAndView modelAndView = userService.buildUserHomeView(userData, latestJobs);
 
         return modelAndView;
     }
@@ -44,16 +45,21 @@ public class HomeController {
     public ModelAndView searchJobs(@RequestParam(name = "keyword", required = false) String keyword,
                                    @RequestParam(name = "location", required = false) String location,
                                    @RequestParam(name = "jobType", required = false) String jobType,
-                                   @AuthenticationPrincipal UserData userData) {
+                                   @AuthenticationPrincipal UserData userData,
+                                   HttpServletResponse response) {
+
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
 
         if (!StringUtils.hasText(keyword) && !StringUtils.hasText(location) && !StringUtils.hasText(jobType)) {
             return new ModelAndView("redirect:/user-home");
         }
 
-        EmploymentType employmentType = resolveEmploymentType(jobType);
+        EmploymentType employmentType = jobService.resolveEmploymentType(jobType);
         List<Job> offers = jobService.searchOffers(keyword, location, employmentType);
 
-        ModelAndView modelAndView = buildUserHomeView(userData, offers);
+        ModelAndView modelAndView = userService.buildUserHomeView(userData, offers);
         Map<String, Object> searchParams = new HashMap<>();
         searchParams.put("keyword", keyword);
         searchParams.put("location", location);
@@ -65,44 +71,8 @@ public class HomeController {
         return modelAndView;
     }
 
-    @PatchMapping("/jobs/{id}")
-    public String appliedJob(@PathVariable UUID id, @AuthenticationPrincipal UserData userData) {
-
-        jobService.appliedOffer(id, userData);
-
-        return "redirect:/user-home";
-    }
-
-//    @GetMapping("/logout")
-//    public String logout(HttpSession session) {
-//
-//        session.invalidate();
-//        return "redirect:/index";
-//    }
-
-    private ModelAndView buildUserHomeView(UserData userData, List<Job> offers) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("user-home");
-        modelAndView.addObject("user", userData);
-        modelAndView.addObject("latestJobs", offers);
-        Map<String, Object> defaultParams = new HashMap<>();
-        defaultParams.put("keyword", null);
-        defaultParams.put("location", null);
-        defaultParams.put("jobType", null);
-        modelAndView.addObject("searchParams", defaultParams);
-        modelAndView.addObject("searchActive", false);
-        modelAndView.addObject("searchResultCount", offers.size());
-        return modelAndView;
-    }
-
-    private EmploymentType resolveEmploymentType(String jobType) {
-        if (!StringUtils.hasText(jobType)) {
-            return null;
-        }
-        try {
-            return EmploymentType.valueOf(jobType.trim().toUpperCase());
-        } catch (IllegalArgumentException ex) {
-            return null;
-        }
+    @GetMapping({"/index"})
+    public String index() {
+        return "index";
     }
 }

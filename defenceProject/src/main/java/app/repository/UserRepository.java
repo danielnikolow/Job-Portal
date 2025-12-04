@@ -1,6 +1,6 @@
-package main.repository;
+package app.repository;
 
-import main.model.User;
+import app.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByUsername(String username);
 
+    User findByFirstName(String firstName);
 }

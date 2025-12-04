@@ -1,9 +1,9 @@
-package main.service;
-import main.model.EmploymentType;
-import main.model.Job;
-import main.model.User;
-import main.repository.JobRepository;
-import main.repository.UserRepository;
+package app.service;
+import app.model.EmploymentType;
+import app.model.Job;
+import app.model.User;
+import app.repository.JobRepository;
+import app.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
-@Profile("dev") // стартира само при spring.profiles.active=dev
+@Profile("dev")
 public class JobDataInit {
 
-    private final UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+//    private final UUID id = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
     private UserRepository userRepository;
 
@@ -29,15 +29,15 @@ public class JobDataInit {
 
         return args -> {
 
-//            String firstName = "R";
-//            User recruiter = userRepository.findByFirstName(firstName);
-//            UUID creatorId = recruiter.getId();
+            String firstName = "R";
+            User recruiter = userRepository.findByFirstName(firstName);
+            UUID id = recruiter.getId();
 
             if (jobRepository.count() > 0) return;
 
             Job o1 = new Job();
             o1.setTitle("Java Developer (Spring Boot)");
-            o1.setDescription("""
+            o1.setSummary("""
                     Търсим Java разработчик със Spring Boot 3, JPA, REST.
                     Опит с Docker и CI/CD е предимство.
                     """);
@@ -51,7 +51,7 @@ public class JobDataInit {
 
             Job o2 = new Job();
             o2.setTitle("Junior Java Engineer (Microservices)");
-            o2.setDescription("""
+            o2.setSummary("""
                     Идеално за начинаещи: работа по микроуслуги, Feign, OpenAPI, тестове.
                     Менторство и бюджет за обучение.
                     """);
@@ -65,7 +65,7 @@ public class JobDataInit {
 
             Job o3 = new Job();
             o3.setTitle("Part-time Java / Kotlin Intern");
-            o3.setDescription("Стаж 20ч/седмица. Работа по малки REST услуги и unit тестове.");
+            o3.setSummary("Стаж 20ч/седмица. Работа по малки REST услуги и unit тестове.");
             o3.setSalaryMin(new BigDecimal("1200.00"));
             o3.setSalaryMax(new BigDecimal("1600.00"));
             o3.setEmploymentType(EmploymentType.INTERNSHIP);
@@ -76,7 +76,7 @@ public class JobDataInit {
 
             Job o4 = new Job();
             o4.setTitle("Contract Java Engineer (6 months)");
-            o4.setDescription("Контракт по проект: миграция към Spring Boot 3.4, кеширане и наблюдаемост.");
+            o4.setSummary("Контракт по проект: миграция към Spring Boot 3.4, кеширане и наблюдаемост.");
             o4.setSalaryMin(new BigDecimal("7000.00"));
             o4.setSalaryMax(new BigDecimal("9000.00"));
             o4.setEmploymentType(EmploymentType.CONTRACT);
@@ -87,7 +87,7 @@ public class JobDataInit {
 
             Job o5 = new Job();
             o5.setTitle("Contract Java Engineer (6 months)");
-            o5.setDescription("Контракт по проект: миграция към Spring Boot 3.4, кеширане и наблюдаемост.");
+            o5.setSummary("Контракт по проект: миграция към Spring Boot 3.4, кеширане и наблюдаемост.");
             o5.setSalaryMin(new BigDecimal("7000.00"));
             o5.setSalaryMax(new BigDecimal("9000.00"));
             o5.setEmploymentType(EmploymentType.CONTRACT);
@@ -98,7 +98,7 @@ public class JobDataInit {
 
             Job o6 = new Job();
             o6.setTitle("Contract Java Engineer (6 months)");
-            o6.setDescription("Контракт по проект: миграция към Spring Boot 3.4, кеширане и наблюдаемост.");
+            o6.setSummary("Контракт по проект: миграция към Spring Boot 3.4, кеширане и наблюдаемост.");
             o6.setSalaryMin(new BigDecimal("7000.00"));
             o6.setSalaryMax(new BigDecimal("9000.00"));
             o6.setEmploymentType(EmploymentType.CONTRACT);
@@ -109,7 +109,7 @@ public class JobDataInit {
 
             Job o7 = new Job();
             o7.setTitle("Contract Java Engineer (6 months)");
-            o7.setDescription("Контракт по проект: миграция към Spring Boot 3.4, кеширане и наблюдаемост.");
+            o7.setSummary("Контракт по проект: миграция към Spring Boot 3.4, кеширане и наблюдаемост.");
             o7.setSalaryMin(new BigDecimal("7000.00"));
             o7.setSalaryMax(new BigDecimal("9000.00"));
             o7.setEmploymentType(EmploymentType.CONTRACT);
@@ -118,7 +118,29 @@ public class JobDataInit {
             o7.setActive(true);
             o7.setCreatorId(id);
 
-            jobRepository.saveAll(List.of(o1, o2, o3, o4, o5, o6, o7));
+            Job o8 = new Job();
+            o8.setTitle("Contract Java Engineer (6 months)");
+            o8.setSummary("Контракт по проект: миграция към Spring Boot 3.4, кеширане и наблюдаемост.");
+            o8.setSalaryMin(new BigDecimal("7000.00"));
+            o8.setSalaryMax(new BigDecimal("9000.00"));
+            o8.setEmploymentType(EmploymentType.CONTRACT);
+            o8.setLocation("Remote (EU)");
+            o8.setCompany("DataBridge");
+            o8.setActive(true);
+            o8.setCreatorId(id);
+
+            Job o9 = new Job();
+            o9.setTitle("Contract Java Engineer (6 months)");
+            o9.setSummary("Контракт по проект: миграция към Spring Boot 3.4, кеширане и наблюдаемост.");
+            o9.setSalaryMin(new BigDecimal("7000.00"));
+            o9.setSalaryMax(new BigDecimal("9000.00"));
+            o9.setEmploymentType(EmploymentType.CONTRACT);
+            o9.setLocation("Remote (EU)");
+            o9.setCompany("DataBridge");
+            o9.setActive(true);
+            o9.setCreatorId(id);
+
+            jobRepository.saveAll(List.of(o1, o2, o3, o4, o5, o6, o7, o8, o9));
         };
     }
 }

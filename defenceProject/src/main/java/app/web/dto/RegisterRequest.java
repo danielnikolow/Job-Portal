@@ -1,9 +1,8 @@
-package main.web.dto;
+package app.web.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import main.model.UserRole;
 
 @Builder
 @Getter
@@ -12,18 +11,19 @@ import main.model.UserRole;
 @NoArgsConstructor
 public class RegisterRequest {
 
-    private UserRole role;
+    private String role;
 
+    @NotBlank(message = "Първото име е задължително")
     private String firstName;
 
     private String lastName;
 
-    @NotBlank
-    @Size(min = 6, max = 26, message = "Username length must be between 6 and 26 symbols.")
+    @NotBlank(message = "Потребителско име е задължително")
+    @Size(min = 5, max = 20, message = "Прякора трябва да бъде между 5 и 20 символа")
     private String username;
 
-    @NotBlank
-    @Size(min = 5, max = 8, message = "Password must be exactly 6 symbols.")
+    @NotBlank(message = "Паролата е задължителна")
+    @Size(min = 5, max = 20, message = "Паролата трябва да бъде между 5 и 20 символа")
     private String password;
 
 

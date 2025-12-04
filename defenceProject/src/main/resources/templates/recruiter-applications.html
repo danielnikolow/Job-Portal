@@ -146,8 +146,8 @@
                     </select>
                     <button type="submit" class="btn primary">Запази</button>
                 </form>
-                <form class="delete-job-form" th:action="@{'/recruiter-applications/job/' + ${app.job.id} + '/delete'}" method="post" 
-                      onsubmit="return confirm('Сигурни ли сте, че искате да изтриете тази работа? Това ще изтрие работата от всички обяви и ще обнови статуса на кандидатурите на \"job delete\".');">
+                <form class="delete-job-form" th:action="@{'/recruiter-applications/job/' + ${app.job.id} + '/delete'}" method="post">
+<!--                      onsubmit="return confirm('Сигурни ли сте, че искате да изтриете тази работа? Това ще изтрие работата от всички обяви и ще обнови статуса на кандидатурите на \"job delete\".');">-->
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="btn danger">Изтрии работа</button>
                 </form>

@@ -1,6 +1,8 @@
-package main.model;
+package app.model;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Builder
@@ -36,4 +38,5 @@ public class Application {
     private LocalDate submittedOn;
 
     private boolean active;
+
 }

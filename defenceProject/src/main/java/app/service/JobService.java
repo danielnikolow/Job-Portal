@@ -1,19 +1,25 @@
-package main.service;
+package app.service;
 
+import app.repository.ApplicationRepository;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import main.model.Application;
-import main.model.EmploymentType;
-import main.model.Job;
-import main.model.User;
-import main.repository.JobRepository;
-import main.repository.UserRepository;
-import main.security.UserData;
-import main.web.dto.CreateJobRequest;
+import app.model.Application;
+import app.model.EmploymentType;
+import app.model.Job;
+import app.model.User;
+import app.repository.JobRepository;
+import app.repository.UserRepository;
+import app.security.UserData;
+import app.web.dto.CreateJobRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -21,17 +27,20 @@ public class JobService {
 
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
-    private final ApplicationService applicationService;
+    private final ApplicationRepository applicationRepository;
+    private final MatchingScheduler matchingScheduler;
 
-    public JobService(JobRepository jobRepository, ApplicationService applicationService, UserRepository userRepository) {
+    public JobService(JobRepository jobRepository, UserRepository userRepository, 
+                     ApplicationRepository applicationRepository, MatchingScheduler matchingScheduler) {
         this.jobRepository = jobRepository;
         this.userRepository = userRepository;
-        this.applicationService = applicationService;
+        this.applicationRepository = applicationRepository;
+        this.matchingScheduler = matchingScheduler;
     }
 
- public void appliedOffer(UUID id, UserData userData, MultipartFile cvFile) {
+    public void appliedOffer(UUID id, UserData userData, MultipartFile cvFile) {
 
-         Job job = jobRepository.findById(id)
+        Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Job not found with id: " + id));
 
         User user = userRepository.findById(userData.getUserId())
@@ -92,11 +101,31 @@ public class JobService {
                 .build();
 
         job = jobRepository.save(job);
-        
+
         try {
             checkJobAlertsAndCreateMatches(job);
         } catch (Exception e) {
             log.error("Error checking job alerts for job: " + job.getId(), e);
+        }
+    }
+
+    public EmploymentType resolveEmploymentType(String jobType) {
+        if (!StringUtils.hasText(jobType)) {
+            return null;
+        }
+        try {
+            return EmploymentType.valueOf(jobType.trim().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
+    }
+
+    private void checkJobAlertsAndCreateMatches(Job job) {
+        log.info("Checking job alerts for newly created job: {}", job.getId());
+        try {
+            matchingScheduler.matchJobAgainstAlerts(job);
+        } catch (Exception e) {
+            log.error("Error matching job {} against alerts: {}", job.getId(), e.getMessage(), e);
         }
     }
 

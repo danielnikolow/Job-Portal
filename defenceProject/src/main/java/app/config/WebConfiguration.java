@@ -1,4 +1,4 @@
-package main.config;
+package app.config;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -31,8 +31,11 @@ public class WebConfiguration implements WebMvcConfigurer {
                                 .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                        .logoutSuccessUrl("/")
+                        .logoutUrl("/logout")           // съвпада с th:action="@{/logout}"
+                        .logoutSuccessUrl("/index")     // след logout ще пренасочи тук
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .permitAll()
                 );
 
         return httpSecurity.build();

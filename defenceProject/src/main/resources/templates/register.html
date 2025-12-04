@@ -102,7 +102,7 @@
             <div class="register-form-wrapper">
                 <div class="form-header">
                     <h2>Създай акаунт</h2>
-                    <p>Попълни формата по-долу и започни да намираш работа</p>
+<!--                    <p>Попълни формата по-долу и започни да намираш работа</p>-->
                 </div>
 
                 <!-- Error Message -->
@@ -116,7 +116,7 @@
                         <label class="form-label-large">Регистрирай се като</label>
                         <div class="user-type-options">
                             <label class="user-type-option">
-                                <input type="radio" name="userType" value="CANDIDATE" checked>
+                                <input type="radio" name="userType" th:field="*{role}" value="USER" checked>
                                 <div class="option-card">
                                     <div class="option-icon">👤</div>
                                     <div class="option-content">
@@ -127,7 +127,7 @@
                                 </div>
                             </label>
                             <label class="user-type-option">
-                                <input type="radio" name="userType" value="EMPLOYER">
+                                <input type="radio" name="userType" th:field="*{role}" value="RECRUITER">
                                 <div class="option-card">
                                     <div class="option-icon">🏢</div>
                                     <div class="option-content">
@@ -150,7 +150,7 @@
                                 </svg>
                                 Първо име
                             </label>
-                            <input type="text" id="firstName" name="firstName"  th:field="*{firstName}" class="form-input-advanced" placeholder="Иван" required autocomplete="given-name">
+                            <input type="text" id="firstName" name="firstName" th:field="*{firstName}" th:classappend="${#fields.hasErrors('firstName')} ? 'error' : ''" class="form-input-advanced" placeholder="Иван">                            <div class="field-error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
                         </div>
                         <div class="form-group-advanced">
                             <label for="lastName" class="form-label-advanced">
@@ -160,7 +160,8 @@
                                 </svg>
                                 Второ име
                             </label>
-                            <input type="text" id="lastName" name="lastName" th:field="*{lastName}" class="form-input-advanced" placeholder="Иванов" required autocomplete="family-name">
+                            <input type="text" id="lastName" name="lastName" th:field="*{lastName}" th:classappend="${#fields.hasErrors('lastName')} ? 'error' : ''" class="form-input-advanced" placeholder="Иванов" autocomplete="family-name">
+                            <div class="field-error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
                         </div>
                     </div>
 
@@ -172,10 +173,10 @@
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
                             Потребителско име
-                            <span class="username-hint">Само букви, цифри и _</span>
+<!--                            <span class="username-hint">Само букви, цифри и _</span>-->
                         </label>
-                        <input type="text" id="username" name="username" th:field="*{username}" class="form-input-advanced" placeholder="ivan_ivanov" required autocomplete="username" pattern="[a-zA-Z0-9_]+" title="Само букви, цифри и долна черта">
-                        <div class="username-availability" id="usernameAvailability"></div>
+                        <input type="text" id="username" name="username" th:field="*{username}" th:classappend="${#fields.hasErrors('username')} ? 'error' : ''" class="form-input-advanced" placeholder="ivan_ivanov" autocomplete="username" pattern="[a-zA-Z0-9_]+" title="Само букви, цифри и долна черта">                        <div class="username-availability" id="usernameAvailability"></div>
+                        <div class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
                     </div>
 
                     <!-- Password -->
@@ -186,11 +187,10 @@
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                             </svg>
                             Парола
-                            <span class="password-hint">Минимум 5 символа</span>
+<!--                            <span class="password-hint">Минимум 1 символа</span>-->
                         </label>
                         <div class="password-wrapper-advanced">
-                            <input type="password" id="password" name="password" th:field="*{password}" class="form-input-advanced" placeholder="Създай сигурна парола" required autocomplete="new-password">
-                            <button type="button" class="password-toggle-advanced" onclick="togglePassword('password', this)">
+                            <input type="password" id="password" name="password" th:field="*{password}" th:classappend="${#fields.hasErrors('password')} ? 'error' : ''" class="form-input-advanced" placeholder="Създай сигурна парола" autocomplete="new-password">                            <button type="button" class="password-toggle-advanced" onclick="togglePassword('password', this)">
                                 <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                     <circle cx="12" cy="12" r="3"></circle>
@@ -207,6 +207,7 @@
                             <div class="strength-bar"></div>
                             <div class="strength-bar"></div>
                         </div>
+                        <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                     </div>
 
                     <!-- Confirm Password -->
@@ -419,8 +420,57 @@
         });
     });
 
+    // Clear fields with errors on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('registerForm');
+        if (form) {
+            var errorDivs = form.querySelectorAll('.field-error');
+            errorDivs.forEach(function(errorDiv) {
+                // Check if error div is visible (has content)
+                if (errorDiv.textContent.trim() !== '') {
+                    // Find the parent form-group-advanced
+                    var formGroup = errorDiv.closest('.form-group-advanced');
+                    if (formGroup) {
+                        // Find all input fields in this group
+                        var inputs = formGroup.querySelectorAll('input[type="text"], input[type="password"]');
+                        inputs.forEach(function(input) {
+                            input.value = '';
+                        });
+                    }
+                }
+            });
+        }
+    });
+    // Hide error messages for empty required fields
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('registerForm');
+        if (form) {
+            var errorDivs = form.querySelectorAll('.field-error');
+            errorDivs.forEach(function(errorDiv) {
+                // Find the parent form-group-advanced
+                var formGroup = errorDiv.closest('.form-group-advanced');
+                if (formGroup) {
+                    // Find input fields in this group
+                    var inputs = formGroup.querySelectorAll('input[type="text"], input[type="password"]');
+                    var isEmpty = true;
+
+                    inputs.forEach(function(input) {
+                        if (input.value && input.value.trim() !== '') {
+                            isEmpty = false;
+                        }
+                    });
+
+                    // Hide error if all inputs in the group are empty
+                    if (isEmpty) {
+                        errorDiv.style.display = 'none';
+                    }
+                }
+            });
+        }
+    });
     // Set initial selection
     document.querySelector('.user-type-option input[type="radio"]:checked').dispatchEvent(new Event('change'));
 </script>
+
 </body>
 </html>

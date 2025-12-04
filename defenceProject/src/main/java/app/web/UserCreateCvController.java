@@ -37,25 +37,6 @@ public class UserCreateCvController {
         return modelAndView;
     }
 
-    @PostMapping("/create-cv/create-new")
-    public String createNewCv(@AuthenticationPrincipal UserData userData,
-                              @Valid @ModelAttribute("cvRequest") CvRequest cvRequest,
-                              BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes) {
-
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.cvRequest", bindingResult);
-            redirectAttributes.addFlashAttribute("cvRequest", cvRequest);
-            return "redirect:/create-cv";
-        }
-
-        cvService.saveCv(cvRequest, userData.getUserId());
-        redirectAttributes.addFlashAttribute("successMessage", "Ново CV е създадено успешно!");
-
-
-        return "redirect:/create-cv";
-    }
-
     @GetMapping("/edit-cv/{cvId}")
     public ModelAndView editCv(@PathVariable UUID cvId, @AuthenticationPrincipal UserData userData) {
 
@@ -97,6 +78,24 @@ public class UserCreateCvController {
             cvService.saveCv(cvRequest, userData.getUserId());
             redirectAttributes.addFlashAttribute("successMessage", "CV е създадено успешно!");
         }
+
+        return "redirect:/create-cv";
+    }
+
+    @PostMapping("/create-cv/create-new")
+    public String createNewCv(@AuthenticationPrincipal UserData userData,
+                              @Valid @ModelAttribute("cvRequest") CvRequest cvRequest,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.cvRequest", bindingResult);
+            redirectAttributes.addFlashAttribute("cvRequest", cvRequest);
+            return "redirect:/create-cv";
+        }
+
+        cvService.saveCv(cvRequest, userData.getUserId());
+        redirectAttributes.addFlashAttribute("successMessage", "Ново CV е създадено успешно!");
 
         return "redirect:/create-cv";
     }
