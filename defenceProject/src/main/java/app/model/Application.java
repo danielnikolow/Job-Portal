@@ -34,4 +34,6 @@ public class Application {
     private String status;
 
     private LocalDate submittedOn;
+
+    private boolean active;
 }

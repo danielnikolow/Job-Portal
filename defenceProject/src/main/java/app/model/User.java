@@ -45,4 +45,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Application> applications;
 
+    private String location;
+
+    private String email;
+
+    private String phone;
 }

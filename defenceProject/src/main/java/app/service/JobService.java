@@ -31,7 +31,7 @@ public class JobService {
 
  public void appliedOffer(UUID id, UserData userData, MultipartFile cvFile) {
 
-        Job job = jobRepository.findById(id)
+         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Job not found with id: " + id));
 
         User user = userRepository.findById(userData.getUserId())
@@ -51,6 +51,7 @@ public class JobService {
             application.setCvFile(cvFile.getBytes());
             application.setCvFileName(cvFile.getOriginalFilename());
             application.setCvContentType(cvFile.getContentType());
+            application.setActive(true);
         } catch (IOException e) {
             throw new RuntimeException("Failed to read CV file", e);
         }

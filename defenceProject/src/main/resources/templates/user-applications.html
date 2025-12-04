@@ -77,16 +77,20 @@
 <!--                        <span class="detail-label">Локация:</span>-->
 <!--                        <span class="detail-value"><strong th:text="${app.job.location}">София</strong></span>-->
 <!--                    </div>-->
-                    <div class="detail-row" th:if="${app.job.employmentType}">
-                        <span class="detail-label"><strong>Тип:</strong></span>
-                        <span class="detail-value" th:text="${app.job.employmentType}">Пълен работен ден</span>
-                    </div>
                 </div>
 
                 <!--                <div class="app-actions">-->
                 <!--                    <a th:href="@{'/jobs/' + ${app.job.id}}" class="btn btn-view">Виж обява</a>-->
                 <!--                </div>-->
-
+                <div class="detail-row" th:if="${app.job.employmentType}">
+                    <span class="detail-label"><strong>Тип:</strong></span>
+                    <span class="detail-value" th:text="${app.job.employmentType}">Пълен работен ден</span>
+                    <form class="delete-job-form" th:action="@{'/user-applications/app/' + ${app.id} + '/delete'}" method="post">
+                        <!--                      onsubmit="return confirm('Сигурни ли сте, че искате да изтриете тази работа? Това ще изтрие работата от всички обяви и ще обнови статуса на кандидатурите на \"job delete\".');">-->
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn danger">Изтрии работа</button>
+                    </form>
+                </div>
             </div>
         </article>
     </section>
@@ -114,10 +118,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-

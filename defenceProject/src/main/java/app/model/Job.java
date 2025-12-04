@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "jobs")
 public class Job {
 
-    @Id
+     @Id
     @GeneratedValue
     private UUID id;
 
@@ -50,6 +50,7 @@ public class Job {
 
     private String summary;
 
+    @Column(name = "description", length = 10000)
     private String description;
 
     private String requirements;
@@ -58,7 +59,7 @@ public class Job {
 
     private LocalDate deadline;
 
-    @OneToMany(mappedBy = "job")
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Application> applications;
 
     @Column(nullable = false)
