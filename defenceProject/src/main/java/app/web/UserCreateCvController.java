@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
-    public class UserCreateCvController {
+public class UserCreateCvController {
 
     private final CvService cvService;
 
@@ -61,9 +61,9 @@ import java.util.UUID;
 
     @PutMapping("/create-cv/update-cv")
     public String updateCv(@AuthenticationPrincipal UserData userData,
-                         @Valid @ModelAttribute("cvRequest") CvRequest cvRequest,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes) {
+                           @Valid @ModelAttribute("cvRequest") CvRequest cvRequest,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.cvRequest", bindingResult);
@@ -105,21 +105,21 @@ import java.util.UUID;
                                               @Valid @ModelAttribute("cvRequest") CvRequest cvRequest,
                                               BindingResult bindingResult) {
 
-            byte[] pdfBytes = cvService.exportUserCv(cvRequest, userData.getUserId());
-            String baseFileName = cvRequest.getCvName() != null && !cvRequest.getCvName().isEmpty()
-                    ? cvRequest.getCvName()
-                    : "my-cv";
+        byte[] pdfBytes = cvService.exportUserCv(cvRequest, userData.getUserId());
+        String baseFileName = cvRequest.getCvName() != null && !cvRequest.getCvName().isEmpty()
+                ? cvRequest.getCvName()
+                : "my-cv";
 
-            String timestamp = String.valueOf(System.currentTimeMillis());
-            String fileName = baseFileName + "_" + timestamp + ".pdf";
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        String fileName = baseFileName + "_" + timestamp + ".pdf";
 
-            return ResponseEntity
-                    .ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-                    .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate")
-                    .header(HttpHeaders.PRAGMA, "no-cache")
-                    .header(HttpHeaders.EXPIRES, "0")
-                    .contentType(MediaType.APPLICATION_PDF)
-                    .body(pdfBytes);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate")
+                .header(HttpHeaders.PRAGMA, "no-cache")
+                .header(HttpHeaders.EXPIRES, "0")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdfBytes);
     }
 }
