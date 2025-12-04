@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Създай Job Alert | JobPortal</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/job-alerts.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="job-alerts-page">
+<header class="alerts-header">
+    <div class="container">
+        <div class="header-content">
+            <div class="header-text">
+                <div class="breadcrumbs">
+                    <a th:href="@{/user-home}">Начало</a>
+                    <span>/</span>
+                    <a th:href="@{/job-alerts}">Job Alerts</a>
+                    <span>/</span>
+                    <span>Създай</span>
+                </div>
+                <h1>Създай нов Job Alert</h1>
+                <p class="subtitle">Настрой критериите за автоматично търсене на подходящи обяви</p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="alerts-main container">
+    <!-- Flash Messages -->
+    <div th:if="${error}" class="alert alert-error">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <span th:text="${error}">Грешка!</span>
+    </div>
+
+    <form th:action="@{/job-alerts/create}" th:object="${alertRequest}" method="post" class="alert-form">
+        <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}">
+
+        <div class="form-section">
+            <h2 class="section-title">Основни критерии</h2>
+            
+            <div class="form-group">
+                <label for="desiredPosition" class="form-label">Желана позиция</label>
+                <input type="text" id="desiredPosition" th:field="*{desiredPosition}" 
+                       class="form-input" placeholder="Пример: Java Developer, Python Engineer...">
+                <p class="form-hint">Остави празно, за да търсиш всички позиции</p>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="experienceLevel" class="form-label">Ниво на опит</label>
+                    <select id="experienceLevel" th:field="*{experienceLevel}" class="form-input form-select">
+                        <option value="">Всички нива</option>
+                        <option value="JUNIOR">Junior</option>
+                        <option value="MID">Mid</option>
+                        <option value="SENIOR">Senior</option>
+                        <option value="LEAD">Lead</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="employmentType" class="form-label">Тип заетост</label>
+                    <select id="employmentType" th:field="*{employmentType}" class="form-input form-select">
+                        <option value="">Всички типове</option>
+                        <option value="FULL_TIME">Пълен работен ден</option>
+                        <option value="PART_TIME">Непълен работен ден</option>
+                        <option value="FREELANCE">Фрийланс</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="location" class="form-label">Локация</label>
+                    <input type="text" id="location" th:field="*{location}" 
+                           class="form-input" placeholder="София, Пловдив, Remote...">
+                </div>
+
+                <div class="form-group">
+                    <label for="workMode" class="form-label">Режим на работа</label>
+                    <select id="workMode" th:field="*{workMode}" class="form-input form-select">
+                        <option value="">Всички режими</option>
+                        <option value="ONSITE">На място</option>
+                        <option value="REMOTE">Дистанционно</option>
+                        <option value="HYBRID">Хибридно</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="minSalary" class="form-label">Минимална заплата (лв.)</label>
+                <input type="number" id="minSalary" th:field="*{minSalary}" 
+                       class="form-input" placeholder="5000" min="0" step="100">
+                <p class="form-hint">Остави празно, ако няма минимално изискване</p>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 class="section-title">Умения и технологии</h2>
+            <div class="form-group">
+                <label for="requiredSkills" class="form-label">Изисквани умения</label>
+                <textarea id="requiredSkills" name="requiredSkills" 
+                          class="form-input form-textarea" 
+                          placeholder="Въведи уменията разделени със запетая: Java, Spring, Docker, Kubernetes..."
+                          th:value="${alertRequest?.requiredSkills}"></textarea>
+                <p class="form-hint">Раздели уменията със запетая. Системата ще търси обяви, които съдържат тези технологии.</p>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 class="section-title">Настройки на известията</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="minScore" class="form-label">Минимален match score (0-100)</label>
+                    <input type="number" id="minScore" th:field="*{minScore}" 
+                           class="form-input" min="0" max="100" value="60">
+                    <p class="form-hint">Само обяви с score >= този праг ще бъдат изпратени</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="notifyChannel" class="form-label">Канал за известия</label>
+                    <select id="notifyChannel" th:field="*{notifyChannel}" class="form-input form-select">
+                        <option value="IN_APP">In-App</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="frequency" class="form-label">Честота на известия</label>
+                <select id="frequency" th:field="*{frequency}" class="form-input form-select">
+                    <option value="INSTANT">Веднага при match</option>
+                    <option value="DAILY">Веднъж дневно (digest)</option>
+                    <option value="WEEKLY">Веднъж седмично (digest)</option>
+                </select>
+                <p class="form-hint">INSTANT изпраща веднага, DAILY/WEEKLY изпраща обобщени известия</p>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/job-alerts}" class="btn-secondary">Отказ</a>
+            <button type="submit" class="btn-primary">Създай Alert</button>
+        </div>
+    </form>
+</main>
+
+
+</body>
+</html>
