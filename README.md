@@ -1,36 +1,35 @@
-1️⃣ Описание на проекта
+1️⃣ Project Description
 
-Това е приложение изцяло за търсене на работа като програмисти. 
-Като потребител при регистрация трябва да избере между роля кандидат или роля работодател спрямо това да ли търси работа като програмист или искате да публикувате обява за работа за програмисти. 
+This is an application entirely for searching for jobs as programmers. As a user, upon registration, you must choose between a candidate role or an employer role depending on whether you are looking for a job as a programmer or want to publish a job advertisement for programmers.
 
-Кандидатите могат да кандидатстват за всяка отворен позиция, като за целта преди това се изисква от тях да си създадат собствено Cv в секцията създай Cv и да го изтеглят като Pdf файл, тъй като кандидатстванията за работа в това приложение стават само чрез pdf файлове (Cv).
-Кандидатите могат и да преглеждат своите кандидатури, да ги трият, да създават Cv-та, да ги редактират, да ги изтеглят като pdf файлове.
+Candidates can apply for any open position, and for this purpose they are previously required to create their own Cv in the create Cv section and download it as a PDF file, since job applications in this application are only made via a PDF file (Cv). Candidates can review their applications, delete them, create Cvs, edit them and download them as PDF files.
 
-Те също могат и да създават job alert-и, който при определени критерии зададени за вас самите, да следят всеки път при излизането на нова обява за програмист, дали неините критерии и изисквания съвпадат с вашите и ако съвпадат да ви изпратят известие в секцита известия за нея.
+They can also create job alerts, which accept certain criteria and requirements set by themselves. These job alerts, each time a new programmer advertisement is released, monitor whether their criteria and requirements that you have set for them match those of the advertisement and if they match, then send a notification of a successful match in the notifications section.
 
-Работодателите може да публикуват обяви за работа и да вижда кандидатурите за тях в секцията applications, където могат и да редактират техният статус на интервю/отказана/оферта, както и да ги трият.
+Employers can post job postings and view applications for them in the applications section. They can open and view CVs associated with a candidate's applications and edit their interview/rejected/offer status, as well as delete them.
 
-2️⃣ Функционалности
+2️⃣ Features
 
-(main приложение)
-1. Потребител - Кандидатстване за работо чрез pdf файл
-2. Потребител - Триене на кандидатура
-3. Потребител - Създаване на Job alert
-4. Работодател - Създаване на работа
-5. Работодател - Промяна на статуса на кандидатура за негова работа
-6. Работодател - Триене на негова обява за работа.
+(main application)
 
-(microservice приложение)
-7. Потребител - Създаване на Cv
-8. Потребител - Редактиране на Cv
+1. Candidate - Apply for a job via PDF file
+2. Candidate - Delete application
+3. Candidate - Create Job alert
+4. Employer - Create job
+5. Employer - Change application status
+6. Employer - Delete job posting.
 
+(microservice application)
 
-3️⃣ Инструкции за инсталиране и пускане на проекта
+7. Candidate - Create CV
+8. Candidate - Edit CV
 
-За най-удобно в IntelliJ IDEA натиснете Get from Version Vontrol и въведете линка за моето репозитори което искате да свалите и стартиртате. 
+3️⃣ Instructions for installing and running the project
 
-В случая това е https://github.com/danielnikolow/Job-Portal. След това натиснете Clone. При зареждането на структурата и файловете в началото може да ви излезе notification, на който пише Maven build scripts found.
+For the most convenient way in IntelliJ IDEA, click Get from Version Vontrol and enter the link to my repository that you want to download and start.
 
-Трябва да натиснете бутона load в този notificaiton, иначе проекта не би могъл да започне да работи. Ако не го виждате или се е скрил, то тогава ще го намерите със сигурност в Notifications (най-горе в дясно, камбанката под бутоза X за затваряне на IntelliJ IDEA). 
+In this case, it is https://github.com/danielnikolow/Job-Portal. Then click Clone. When loading the structure and files, you may initially see a notification that says Maven build scripts found.
 
-Направите ли и това, единствено остава да стартирате и двата проекта, за най-удобно чрез Application класа, който се намира и във двата проекта за да стартирате приложението.
+You must click the load button in this notification, otherwise the project will not be able to start working. If you do not see it or it is hidden, then you will definitely find it in Notifications (at the top right, the bell under the X button to close IntelliJ IDEA).
+
+Once you have done this, all that remains is to start both projects, most conveniently through the Application class, which is located in both projects to start the application.
